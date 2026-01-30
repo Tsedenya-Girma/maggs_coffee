@@ -1,0 +1,76 @@
+* { box-sizing: border-box }
+html, body { height: 100% }
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  color: #e2e8f0;
+  background: radial-gradient(1200px 800px at 20% 10%, #0b1224 0%, #0a0f1f 40%, #060a16 100%);
+}
+
+.main-title { margin: 0 }
+.wrap {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+h1 { font-size: 26px; color: #93c5fd; letter-spacing: 0.5px; }
+
+canvas {
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  background: #0f172a; /* matches JS background */
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #cbd5e1;
+}
+
+button {
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: #1e293b;
+  color: #e2e8f0;
+}
+button:hover { background: #334155 }
+
+.hint { opacity: 0.8; font-size: 14px }
+
+/* Mobile Controls Container */
+.mobile-controls {
+  display: none; /* Hidden by default on PC */
+  grid-template-columns: repeat(3, 60px);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .mobile-controls {
+    display: grid; /* Show on small screens */
+  }
+}
+
+.touch-btn {
+  width: 60px;
+  height: 60px;
+  background: rgba(147, 197, 253, 0.3);
+  border: 2px solid #93c5fd;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: white;
+  user-select: none;
+  touch-action: manipulation;
+}
