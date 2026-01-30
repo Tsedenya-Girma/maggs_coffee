@@ -518,3 +518,684 @@ if (buyNowBtn) {
         });
     }
 });
+// =============================================
+// 3D DRINK BUILDER MODAL SETUP - FIXED
+// =============================================
+
+function setupDrinkBuilderModal() {
+    const openModalBtn = document.getElementById('openModal');
+    const closeModalBtn = document.getElementById('closeModal');
+    const modal = document.getElementById('drinkModal');
+    
+    if (openModalBtn && modal) {
+        openModalBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            console.log('Opening 3D drink builder modal...');
+            modal.style.display = 'flex';
+            
+            // Reset selections
+            resetSelections();
+            
+            // Initialize Three.js after a short delay to ensure DOM is ready
+            setTimeout(() => {
+                initThreeJS();
+            }, 100);
+        });
+    }
+    
+    if (closeModalBtn && modal) {
+        closeModalBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            console.log('Closing 3D drink builder modal...');
+            modal.style.display = 'none';
+            cleanup3DScene();
+        });
+    }
+    
+    // Close modal when clicking outside
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                cleanup3DScene();
+            }
+        });
+    }
+    
+    // Setup step navigation
+    const prevBtn = document.getElementById('prev-step');
+    const nextBtn = document.getElementById('next-step');
+    const addBtn = document.getElementById('add-to-cart-final');
+    
+    if (prevBtn) prevBtn.addEventListener('click', handlePrevStep);
+    if (nextBtn) nextBtn.addEventListener('click', handleNextStep);
+    if (addBtn) addBtn.addEventListener('click', addCustomDrinkToCart);
+    
+    // Setup rotation controls
+    const rotateLeft = document.getElementById('rotate-left');
+    const rotateRight = document.getElementById('rotate-right');
+    const toggleRotation = document.getElementById('toggle-rotation');
+    
+    if (rotateLeft) {
+        rotateLeft.addEventListener('click', () => {
+            appState.threejs.isRotating = false;
+            if (appState.threejs.cupModel) {
+                appState.threejs.cupModel.rotation.y -= Math.PI / 8; // More precise rotation
+            }
+        });
+    }
+    
+    if (rotateRight) {
+        rotateRight.addEventListener('click', () => {
+            appState.threejs.isRotating = false;
+            if (appState.threejs.cupModel) {
+                appState.threejs.cupModel.rotation.y += Math.PI / 8;
+            }
+        });
+    }
+    
+    if (toggleRotation) {
+        toggleRotation.addEventListener('click', () => {
+            appState.threejs.isRotating = !appState.threejs.isRotating;
+            toggleRotation.textContent = appState.threejs.isRotating ? '⏸️ Stop' : '▶️ Start';
+            toggleRotation.title = appState.threejs.isRotating ? 'Stop Auto Rotation' : 'Start Auto Rotation';
+        });
+    }
+    
+    // Setup option selection
+    setupOptionSelection();
+}
+
+function initThreeJS() {
+    console.log('🔄 Initializing Three.js scene...');
+    
+    // Get canvas element
+    const canvas = document.getElementById('drinkCanvas');
+    if (!canvas) {
+        console.error('❌ Canvas element not found!');
+        return;
+    }
+    
+    // Clean up any existing scene
+    cleanup3DScene();
+    
+    // Show loading overlay
+    showCanvasLoading(true);
+    
+    try {
+        // Create scene with transparent background
+        appState.threejs.scene = new THREE.Scene();
+        appState.threejs.scene.background = new THREE.Color(0xf9f1e8);
+        
+        // Get canvas dimensions
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        
+        console.log(`Canvas dimensions: ${width}x${height}`);
+        
+        // Create camera
+        appState.threejs.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+        appState.threejs.camera.position.set(0, 0.3, 4);
+        appState.threejs.camera.lookAt(0, 0.3, 0);
+        
+        // Create renderer
+        appState.threejs.renderer = new THREE.WebGLRenderer({ 
+            antialias: true,
+            alpha: true,
+            canvas: canvas,
+            preserveDrawingBuffer: true
+        });
+        
+        // Set renderer size to match canvas container
+        appState.threejs.renderer.setSize(width, height, false);
+        appState.threejs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        appState.threejs.renderer.shadowMap.enabled = false;
+        
+        // Setup lights
+        setupLights();
+        
+        // Create improved transparent cup
+        createSimpleCup();
+        
+        // Try to load 3D model
+        load3DModel();
+        
+        // Start animation loop
+        animate();
+        
+        // Handle window resize
+        window.addEventListener('resize', onWindowResize);
+        
+        console.log('✅ Three.js scene initialized successfully');
+        
+    } catch (error) {
+        console.error('❌ Error initializing Three.js:', error);
+        showCanvasError('Failed to initialize 3D viewer');
+    }
+}
+
+function setupLights() {
+    // Ambient light for overall illumination
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    appState.threejs.scene.add(ambientLight);
+    
+    // Main directional light
+    const mainLight = new THREE.DirectionalLight(0xffffff, 0.6);
+    mainLight.position.set(2, 4, 3);
+    mainLight.castShadow = false;
+    appState.threejs.scene.add(mainLight);
+    
+    // Fill light
+    const fillLight = new THREE.DirectionalLight(0xffffff, 0.3);
+    fillLight.position.set(-2, 2, -2);
+    fillLight.castShadow = false;
+    appState.threejs.scene.add(fillLight);
+    
+    // Back light for rim lighting
+    const backLight = new THREE.DirectionalLight(0xffffff, 0.2);
+    backLight.position.set(0, 2, -3);
+    appState.threejs.scene.add(backLight);
+}
+
+function createSimpleCup() {
+    console.log('Creating improved transparent cup...');
+    
+    const group = new THREE.Group();
+    group.position.set(0, 0, 0);
+    
+    // IMPROVED: Cup body with better transparency
+    const cupGeometry = new THREE.CylinderGeometry(0.5, 0.45, 1.2, 32);
+    const cupMaterial = new THREE.MeshPhysicalMaterial({ 
+        color: 0xF5F5F5,
+        roughness: 0.05,
+        metalness: 0.3,
+        transparent: true,
+        opacity: 0.25,           // More transparent
+        transmission: 0.8,       // Glass-like transmission
+        thickness: 0.05,
+        side: THREE.DoubleSide,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.05
+    });
+    
+    const cup = new THREE.Mesh(cupGeometry, cupMaterial);
+    cup.castShadow = false;
+    cup.receiveShadow = false;
+    cup.userData = { isCup: true };
+    group.add(cup);
+    
+    // Create initial liquid
+    createLiquidForCup();
+    
+    // Handle
+    const handleGeometry = new THREE.TorusGeometry(0.2, 0.04, 16, 100, Math.PI);
+    const handleMaterial = new THREE.MeshStandardMaterial({ 
+        color: 0x5d4037,
+        roughness: 0.3,
+        metalness: 0.5
+    });
+    
+    const handle = new THREE.Mesh(handleGeometry, handleMaterial);
+    handle.position.x = 0.5;
+    handle.position.y = 0;
+    handle.rotation.z = Math.PI / 2;
+    handle.castShadow = false;
+    handle.userData = { isHandle: true };
+    group.add(handle);
+    
+    // Base plate
+    const baseGeometry = new THREE.CylinderGeometry(0.55, 0.55, 0.05, 32);
+    const baseMaterial = new THREE.MeshStandardMaterial({ 
+        color: 0x8B7355,
+        roughness: 0.5,
+        metalness: 0.2
+    });
+    
+    const base = new THREE.Mesh(baseGeometry, baseMaterial);
+    base.position.y = -0.625;
+    base.castShadow = false;
+    group.add(base);
+    
+    appState.threejs.cupModel = group;
+    appState.threejs.scene.add(appState.threejs.cupModel);
+    
+    // Hide loading overlay
+    showCanvasLoading(false);
+}
+
+function createLiquidForCup() {
+    if (!appState.threejs.cupModel) return;
+    
+    // Remove existing liquid if any
+    if (appState.threejs.liquidMesh) {
+        appState.threejs.cupModel.remove(appState.threejs.liquidMesh);
+    }
+    
+    // LIQUID DIMENSIONS - Adjusted to fit inside the cup properly
+    // Slightly smaller than cup to show glass thickness
+    const liquidGeometry = new THREE.CylinderGeometry(0.12, 0.12, 0.4, 32);
+    
+    // Base drink color (will be updated in applyCustomization)
+    let drinkColor = CONFIG.DRINK_COLORS[drinkBuilderState.selectedType] || 0x8B4513;
+    
+    const liquidMaterial = new THREE.MeshPhysicalMaterial({ 
+        color: drinkColor,
+        roughness: 0.1,
+        metalness: 0.05,
+        transparent: true,
+        opacity: 0.95,           // More opaque liquid
+        transmission: 0.1,       // Slight transmission for depth
+        thickness: 0.1
+    });
+    
+    const liquid = new THREE.Mesh(liquidGeometry, liquidMaterial);
+    liquid.position.y = -0.01;    // Positioned inside cup
+    liquid.castShadow = false;
+    liquid.receiveShadow = false;
+    liquid.userData = { isLiquid: true };
+    
+    appState.threejs.liquidMesh = liquid;
+    appState.threejs.cupModel.add(appState.threejs.liquidMesh);
+}
+
+function load3DModel() {
+    if (!THREE.GLTFLoader) {
+        console.warn('⚠️ GLTFLoader not available, using simple cup');
+        showCanvasLoading(false);
+        return;
+    }
+
+    const loader = new THREE.GLTFLoader();
+    const modelPath = CONFIG.MODEL_PATHS.cup || 'models/ikea_glass.glb';
+
+    console.log(`📦 Loading 3D model from: ${modelPath}`);
+
+    loader.load(
+        modelPath,
+        // ✅ SUCCESS
+        (gltf) => {
+            console.log('✅ 3D Model loaded successfully');
+
+            // Remove existing cup model if any
+            if (appState.threejs.cupModel) {
+                appState.threejs.scene.remove(appState.threejs.cupModel);
+                appState.threejs.cupModel.traverse(obj => {
+                    if (obj.geometry) obj.geometry.dispose();
+                    if (obj.material) {
+                        if (Array.isArray(obj.material)) {
+                            obj.material.forEach(m => m.dispose());
+                        } else {
+                            obj.material.dispose();
+                        }
+                    }
+                });
+            }
+
+            // Store model
+            appState.threejs.cupModel = gltf.scene;
+
+            // Configure materials for transparency
+            configureCupModel(appState.threejs.cupModel);
+
+            // Add to scene
+            appState.threejs.scene.add(appState.threejs.cupModel);
+
+            // Create liquid after model is positioned
+            createLiquidForCup();
+
+            // Apply user customization
+            applyCustomization();
+
+            // Hide loading overlay
+            showCanvasLoading(false);
+        },
+        // 📊 PROGRESS
+        (progress) => {
+            if (progress.total) {
+                const percent = ((progress.loaded / progress.total) * 100).toFixed(1);
+                console.log(`⏳ Loading model: ${percent}%`);
+            }
+        },
+        // ❌ ERROR
+        (error) => {
+            console.error('❌ Error loading 3D model:', error);
+            showCanvasLoading(false);
+            // Show error but keep the simple cup visible
+        }
+    );
+}
+
+function configureCupModel(cupModel) {
+    const box = new THREE.Box3().setFromObject(cupModel);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+
+    // Center model at origin
+    cupModel.position.sub(center);
+
+    // Scale model to a nice size
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scale = 1.6 / maxDim;
+    cupModel.scale.setScalar(scale);
+
+    // Slight rotation for aesthetics
+    cupModel.rotation.y = Math.PI / 6;
+
+    // Auto-position camera
+    const camera = appState.threejs.camera;
+    const fov = camera.fov * (Math.PI / 180);
+    const distance = (maxDim * scale) / (2 * Math.tan(fov / 2));
+
+    camera.position.set(0, 2, distance * 1.7);
+    camera.lookAt(0, 0.1, 0);
+
+    // Update clipping planes
+    camera.near = distance / 10;
+    camera.far = distance * 10;
+    camera.updateProjectionMatrix();
+
+    // Make cup materials transparent
+    cupModel.traverse((child) => {
+        if (child.isMesh) {
+            child.castShadow = false;
+            child.receiveShadow = false;
+            
+            // If this is the cup material, make it transparent
+            if (child.material && (child.name.toLowerCase().includes('cup') || 
+                                   child.name.toLowerCase().includes('glass') ||
+                                   child.material.name.toLowerCase().includes('glass'))) {
+                child.material.transparent = true;
+                child.material.opacity = 0.3;
+                child.material.transmission = 0.8;
+                child.material.roughness = 0.1;
+                child.material.metalness = 0.3;
+            }
+        }
+    });
+}
+
+function applyCustomization() {
+    if (!appState.threejs.cupModel || !appState.threejs.liquidMesh) return;
+    
+    console.log('Applying customization:', drinkBuilderState);
+    
+    // Update liquid color based on selections
+    let finalColor = CONFIG.DRINK_COLORS[drinkBuilderState.selectedType] || 0x8B4513;
+    
+    // Adjust for milk type (lighten the color)
+    if (drinkBuilderState.selectedMilk && drinkBuilderState.selectedMilk !== 'none') {
+        const milkColor = CONFIG.MILK_COLORS[drinkBuilderState.selectedMilk] || 0xF5F5DC;
+        finalColor = mixColors(finalColor, milkColor, 0.5); // More milk influence
+    }
+    
+    // Adjust for flavor (tint the color)
+    if (drinkBuilderState.selectedFlavor && drinkBuilderState.selectedFlavor !== 'none') {
+        const flavorColor = CONFIG.FLAVOR_COLORS[drinkBuilderState.selectedFlavor];
+        if (flavorColor) {
+            finalColor = mixColors(finalColor, flavorColor, 0.4); // Flavor tint
+        }
+    }
+    
+    // Apply color to liquid
+    appState.threejs.liquidMesh.material.color.setHex(finalColor);
+    appState.threejs.liquidMesh.material.needsUpdate = true;
+    
+    // Handle toppings
+    updateTopping();
+    
+    // Update price display
+    updatePrice();
+}
+
+function updateTopping() {
+    // Remove existing topping
+    if (appState.threejs.toppingMesh) {
+        appState.threejs.cupModel.remove(appState.threejs.toppingMesh);
+        appState.threejs.toppingMesh = null;
+    }
+    
+    if (!drinkBuilderState.selectedTopping || drinkBuilderState.selectedTopping === 'none') {
+        return;
+    }
+    
+    const toppingEffect = CONFIG.TOPPING_EFFECTS[drinkBuilderState.selectedTopping];
+    if (!toppingEffect) return;
+    
+    let toppingMesh;
+    
+    switch (toppingEffect.type) {
+        case 'foam':
+            const foamHeight = toppingEffect.height || 0.40;  // taller
+            const foamRadius = toppingEffect.radius || 0.45;
+
+            // Hemisphere geometry
+            const foamGeometry = new THREE.SphereGeometry(
+            foamRadius, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2
+        );
+            const foamMaterial = new THREE.MeshStandardMaterial({ 
+            color: toppingEffect.color || 0xFFFFFF,
+            roughness: 0.7,
+            metalness: 0.0
+        });
+
+            const foamMesh = new THREE.Mesh(foamGeometry, foamMaterial);
+            foamMesh.scale.y = foamHeight / foamRadius; // vertical height
+
+            const foamGroup = new THREE.Group();
+            foamGroup.add(foamMesh);
+
+            // Shrink horizontally
+            foamGroup.scale.x = 0.3;
+            foamGroup.scale.z = 0.3;
+
+            // Position above liquid
+            foamGroup.position.y = 0.22;  
+
+            toppingMesh = foamGroup;
+            break;
+            
+        case 'drizzle':
+            // Create drizzle effect - IMPROVED SIZING
+            const drizzleCount = toppingEffect.count || 5;
+            const drizzleGroup = new THREE.Group();
+            
+            // Create multiple drizzle lines
+            for (let i = 0; i < drizzleCount; i++) {
+                const drizzleHeight = 0.15 + Math.random() * 0.1;
+                const drizzleGeometry = new THREE.CylinderGeometry(0.008, 0.008, drizzleHeight, 6);
+                const drizzleMaterial = new THREE.MeshStandardMaterial({ 
+                    color: toppingEffect.color || 0x5D4037,
+                    roughness: 0.3,
+                    metalness: 0.1
+                });
+                
+                const drizzle = new THREE.Mesh(drizzleGeometry, drizzleMaterial);
+                
+                // Position drizzle on top of drink
+                const angle = (i / drizzleCount) * Math.PI * 2;
+                const radius = 0.01 * (0.8 + Math.random() * 0.4);
+                
+                drizzle.position.x = Math.cos(angle) * radius;
+                drizzle.position.y = 0.17 + Math.random() * 0.05;
+                drizzle.position.z = Math.sin(angle) * radius;
+                
+                // Tilt drizzle slightly
+                drizzle.rotation.x = Math.PI / 2;
+                drizzle.rotation.z = angle + (Math.random() - 0.5) * 0.5;
+                
+                drizzleGroup.add(drizzle);
+            }
+            
+            toppingMesh = drizzleGroup;
+            break;
+            
+        case 'sprinkle':
+            // Create sprinkle particles - IMPROVED SIZING
+            const sprinkleCount = toppingEffect.count || 20;
+            const sprinkleGroup = new THREE.Group();
+            const sprinkleGeometry = new THREE.SphereGeometry(0.01, 6, 6);
+            const sprinkleMaterial = new THREE.MeshStandardMaterial({ 
+                color: toppingEffect.color || 0xD2691E,
+                roughness: 0.8,
+                metalness: 0.1
+            });
+            
+            // Create multiple sprinkle particles
+            for (let i = 0; i < sprinkleCount; i++) {
+                const sprinkle = new THREE.Mesh(sprinkleGeometry, sprinkleMaterial);
+                
+                // Position sprinkles on top of foam/drink
+                sprinkle.position.set(
+                    (Math.random() - 0.5) * 0.2,
+                    0.17 + Math.random() * 0.02,
+                    (Math.random() - 0.5) * 0.2
+                );
+                
+                // Random rotation for visual variety
+                sprinkle.rotation.set(
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI
+                );
+                
+                sprinkleGroup.add(sprinkle);
+            }
+            
+            toppingMesh = sprinkleGroup;
+            break;
+    }
+    
+    if (toppingMesh) {
+        toppingMesh.castShadow = false;
+        toppingMesh.receiveShadow = false;
+        appState.threejs.toppingMesh = toppingMesh;
+        appState.threejs.cupModel.add(toppingMesh);
+    }
+}
+
+function mixColors(color1, color2, ratio) {
+    const r1 = (color1 >> 16) & 0xFF;
+    const g1 = (color1 >> 8) & 0xFF;
+    const b1 = color1 & 0xFF;
+    
+    const r2 = (color2 >> 16) & 0xFF;
+    const g2 = (color2 >> 8) & 0xFF;
+    const b2 = color2 & 0xFF;
+    
+    const r = Math.floor(r1 * (1 - ratio) + r2 * ratio);
+    const g = Math.floor(g1 * (1 - ratio) + g2 * ratio);
+    const b = Math.floor(b1 * (1 - ratio) + b2 * ratio);
+    
+    return (r << 16) | (g << 8) | b;
+}
+
+function animate() {
+    if (!appState.threejs.renderer || !appState.threejs.scene || !appState.threejs.camera) {
+        return;
+    }
+    
+    appState.threejs.animationId = requestAnimationFrame(animate);
+    
+    // Auto-rotate if enabled
+    if (appState.threejs.isRotating && appState.threejs.cupModel) {
+        appState.threejs.cupModel.rotation.y += appState.threejs.rotationSpeed;
+    }
+    
+    appState.threejs.renderer.render(appState.threejs.scene, appState.threejs.camera);
+}
+
+function onWindowResize() {
+    const canvas = document.getElementById('drinkCanvas');
+    if (!canvas || !appState.threejs.camera || !appState.threejs.renderer) return;
+    
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    
+    appState.threejs.camera.aspect = width / height;
+    appState.threejs.camera.updateProjectionMatrix();
+    appState.threejs.renderer.setSize(width, height, false);
+}
+
+function cleanup3DScene() {
+    console.log('🧹 Cleaning up 3D scene...');
+    
+    // Stop animation loop
+    if (appState.threejs.animationId) {
+        cancelAnimationFrame(appState.threejs.animationId);
+        appState.threejs.animationId = null;
+    }
+    
+    // Dispose of renderer
+    if (appState.threejs.renderer) {
+        appState.threejs.renderer.dispose();
+        appState.threejs.renderer.forceContextLoss();
+        appState.threejs.renderer = null;
+    }
+    
+    // Clear scene
+    if (appState.threejs.scene) {
+        // Dispose of geometries and materials
+        appState.threejs.scene.traverse((object) => {
+            if (object.geometry) object.geometry.dispose();
+            if (object.material) {
+                if (Array.isArray(object.material)) {
+                    object.material.forEach(material => material.dispose());
+                } else {
+                    object.material.dispose();
+                }
+            }
+        });
+        appState.threejs.scene = null;
+    }
+    
+    // Reset state
+    appState.threejs.camera = null;
+    appState.threejs.cupModel = null;
+    appState.threejs.liquidMesh = null;
+    appState.threejs.toppingMesh = null;
+    appState.threejs.isRotating = true;
+}
+
+function showCanvasLoading(show) {
+    const canvas = document.getElementById('drinkCanvas');
+    if (!canvas) return;
+    
+    // Remove existing overlay
+    const existingOverlay = canvas.parentElement.querySelector('.canvas-overlay');
+    if (existingOverlay) {
+        existingOverlay.remove();
+    }
+    
+    if (show) {
+        const overlay = document.createElement('div');
+        overlay.className = 'canvas-overlay';
+        overlay.innerHTML = `
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading 3D Viewer...</div>
+        `;
+        canvas.parentElement.appendChild(overlay);
+    }
+}
+
+function showCanvasError(message) {
+    const canvas = document.getElementById('drinkCanvas');
+    if (!canvas) return;
+    
+    // Remove existing overlay
+    const existingOverlay = canvas.parentElement.querySelector('.canvas-overlay');
+    if (existingOverlay) {
+        existingOverlay.remove();
+    }
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'canvas-overlay';
+    overlay.innerHTML = `
+        <div style="color: #d9534f; font-size: 24px; margin-bottom: 10px;">⚠️</div>
+        <div class="loading-text" style="color: #d9534f;">${message}</div>
+        <button onclick="createSimpleCup(); this.parentElement.remove();" 
+                style="margin-top: 15px; padding: 8px 16px; background: #9C6644; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Use Simple Cup
+        </button>
+    `;
+    canvas.parentElement.appendChild(overlay);
+}
