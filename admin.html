@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maggs Admin - Dashboard</title>
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+
+    <div id="loginGate" class="login-gate">
+        <img src="images/logo.png" style="height: 60px; margin-bottom: 20px;" onerror="this.src='https://via.placeholder.com/60'">
+        <h2>Admin Access</h2>
+        <input type="password" id="adminPass" placeholder="Enter Password">
+        <button onclick="checkLogin()" class="login-btn">Login</button>
+    </div>
+
+    <div id="adminContent" class="admin-container" style="display:none;">
+        <header style="margin-bottom: 30px;">
+            <h1>Maggs Dashboard</h1>
+            <p>Real-time Business Overview</p>
+        </header>
+
+        <div class="dash-cards">
+            <div class="stat-card"><h3>Total Revenue</h3><p id="stat-sales">$0.00</p></div>
+            <div class="stat-card"><h3>Total Orders</h3><p id="stat-orders">0</p></div>
+            <div class="stat-card"><h3>Menu Items</h3><p id="stat-items">0</p></div>
+        </div>
+
+        <section style="margin-bottom: 40px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2>Recent Orders</h2>
+                <div class="filter-controls">
+                    <label for="orderFilter" style="font-size: 0.9rem; font-weight: 600;">Show: </label>
+                    <select id="orderFilter" onchange="loadAdminData()" style="padding: 6px 12px; border-radius: 8px; border: 1px solid #9C6644; background: white; cursor: pointer;">
+                        <option value="Active">Active (Pending)</option>
+                        <option value="Ready">Completed (Ready)</option>
+                        <option value="All">All History</option>
+                    </select>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Details</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="orderTableBody"></tbody>
+            </table>
+        </section>
+
+        <section>
+            <div class="menu-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2>Menu Management</h2>
+                <input type="text" id="menuSearch" placeholder="Search menu..." onkeyup="filterMenu()" style="padding: 8px; border-radius: 15px; border: 1px solid #ccc;">
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Drink Item</th>
+                        <th>Price (ETB)</th>
+                        <th>Availability</th>
+                    </tr>
+                </thead>
+                <tbody id="menuTableBody"></tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
