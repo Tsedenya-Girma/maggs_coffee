@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="landing.css">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <div class="header-main">
+            <div class="logo">
+            <img src="images/logo.png" alt="Maggs Logo" />
+            </div>
+            <a href="#Home">Home</a>
+            <a href="#Info">Info</a>
+    </div>
+    </header>
+
+    <div class="carousal" id="Home">
+        <div class="list">
+
+            <div class="item">
+                <img src="images/strawberry latte.jpg">
+                <div class="content">
+                    <div class="title">Strawberry Latte</div>
+                    <div class="des">Smooth espresso and creamy milk paired with gentle strawberry sweetness for a comforting, flavorful latte.</div>
+                    <div class="buttons">
+            <button class="btn-order" onclick="openOrderModal()">ORDER NOW</button>
+        </div>
+                </div>
+            </div> 
+            <div class="item">
+                <img src="images/berry americano.jpg">
+                <div class="content">
+                    <div class="title">Berry Americano</div>
+                    <div class="des">Rich Americano blended with delicate berry notes, a light fruity brightness that complements the deep espresso flavor.</div>
+                    <div class="buttons">
+            <button class="btn-order" onclick="openOrderModal()">ORDER NOW</button>
+        </div>
+                </div>
+            </div> 
+            <div class="item">
+                <img src="images/cinnamon mojito.jpg">
+                <div class="content">
+                    <div class="title">Cinnamon Mojito</div>
+                    <div class="des">Fresh mint and citrus balanced with soft cinnamon notes for a refreshing mojito with a bold, aromatic twist.</div>
+                    <div class="buttons">
+            <button class="btn-order" onclick="openOrderModal()">ORDER NOW</button>
+        </div>
+                </div>
+            </div> 
+            <div class="item">
+                <img src="images/strawberry matcha.jpg">
+                <div class="content">
+                    <div class="title">Strawberry Matcha</div>
+                    <div class="des">Earthy matcha balanced with sweet strawberry and creamy milk for a soft, comforting drink.</div>
+                    <div class="buttons">
+            <button class="btn-order" onclick="openOrderModal()">ORDER NOW</button>
+        </div>
+                </div>
+            </div> 
+        </div>
+        <div class="thumbnail">
+            <div class="item">
+                <img src="images/strawberry matcha.png">
+                <div class="content">
+                    <div class="title">
+                        Strawberry Matcha
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/berry americano.png">
+                <div class="content">
+                    <div class="title">
+                        Berry Americano
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/cinnamon mojito.png">
+                <div class="content">
+                    <div class="title">
+                        Cinnamon Mojito
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/strawberry latte.png">
+                <div class="content">
+                    <div class="title">
+                        Strawberry Latte
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="arrows">
+            <button id="prev"><</button>
+            <button id="next">></button>
+        </div>
+        <div class="time"></div>
+    </div>
+
+
+
+
+<section class="story-section reveal "id="Info">
+    <div class="story-content">
+        <h2>Crafting Every Sip</h2>
+        <p>From the first bean to the final pour, we believe in the art of the brew. Our journey started in a small kitchen with a big dream: to redefine the daily caffeine ritual through organic ingredients and bold, unexpected pairings.</p>
+        <div class="story-image-container">
+            <img src="images/workers.jpg" alt="Our Craft" class="floating-img">
+        </div>
+    </div>
+</section>
+
+<section class="reviews-section reveal">
+    <div class="review-header">
+        <h2>What Our Community Says</h2>
+        <div class="review-stats">
+            <span class="stars">★★★★★</span>
+            <p>10K+ Happy Customers</p>
+        </div>
+    </div>
+    <div class="reviews-container">
+        <div class="review-card glass-effect">
+            <p>"The Strawberry Matcha is life-changing. Perfectly sweet and earthy!"</p>
+            <span class="author">- Sarah J.</span>
+        </div>
+        <div class="review-card glass-effect">
+            <p>"Best aesthetic drinks in the city. The Cinnamon Mojito is a must-try."</p>
+            <span class="author">- Mark T.</span>
+        </div>
+        <div class="review-card glass-effect">
+            <p>"A vibe like no other. Great coffee, better atmosphere."</p>
+            <span class="author">- Elena R.</span>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-grid">
+        <div class="footer-info">
+            <h3>Visit Us</h3>
+            <p>4kilo around abrehot, next to America college</p>
+            <a href="maps.app.goo.gl/TEbVA8HnLJSwmm3S6?g_st=ipc">Location</a>
+            <p>Mon - Fri: 8am - 8pm</p>
+        </div>
+        <div class="footer-socials">
+            <h3>Follow the Vibe</h3>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/magscafe.et/">Instagram</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2026 Sip & Savor. All rights reserved.
+    </div>
+</footer>
+<div class="auth-overlay" id="authModal">
+    <div class="auth-card glass-effect">
+        <span class="close-icon">&times;</span>
+        
+        <div class="auth-header">
+            <h2 id="modalTitle">Welcome Back</h2>
+            <p>Sip, savor, and stay connected.</p>
+        </div>
+
+        <form class="auth-form" action="index.html" method="GET">
+    <div class="input-group">
+        <input type="text" id="authUsername" required>
+        <label>Username</label>
+    </div>
+    <div class="input-group">
+        <input type="password" id="authPassword" required>
+        <label>Password</label>
+    </div>
+    <button type="submit" id="submitBtn" class="submit-btn">Let's Go</button>
+</form>
+        
+        <p class="switch-auth">
+            Don't have an account? <a href="#" id="switchLink">Sign Up</a>
+        </p>
+    </div>
+</div>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+    
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+    apiKey: "AIzaSyDKJPjOQac0C-gYDGhMKFUtwmRskbYKHxU",
+    authDomain: "maggs-coffee.firebaseapp.com",
+    projectId: "maggs-coffee",
+    storageBucket: "maggs-coffee.firebasestorage.app",
+    messagingSenderId: "213115578841",
+    appId: "1:213115578841:web:7e82c0db1508c68e3cd1c8",
+    measurementId: "G-WJN5ZZTM3Z"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+</script>
+<script src="landing.js"></script>
+</body>
+</html>

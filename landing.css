@@ -1,0 +1,485 @@
+/* ==========================================================================
+   1. RESET & BASE STYLES
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    font-family: Poppins, sans-serif;
+    background: linear-gradient(180deg, #DDB892 10%, #7F5539 40%, #7F5539 100%);
+    color: #EDE0D4;
+    margin: 0;
+    font-size: 12px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+/* ==========================================================================
+   2. LAYOUT - HEADER
+   ========================================================================== */
+header {
+    width: 1140px;
+    max-width: 80%;
+    margin: auto;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 100;
+}
+
+header a {
+    margin-right: 40px;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+}
+
+
+/* Container styling */
+.header-main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    padding: 10px 0;
+}
+
+/* Logo styling to ensure it fits the flex row */
+.logo img {
+    height: 40px; /* Adjust based on your logo size */
+    width: auto;
+}
+
+/* Link styling */
+.header-main a {
+    padding: 5px 10px;
+    color: wheat; 
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: capitalize;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Underline hover effect */
+.header-main a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 50%;
+    background-color: #9C6644; 
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.header-main a:hover {
+    font-weight: bold;
+}
+
+.header-main a:hover::after {
+    width: 100%;
+}
+
+/* Special button link */
+.header-main a.nav-special {
+    background: #9C6644;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+}
+
+.header-main a.nav-special:hover {
+    background: #6F4E37;
+    transform: translateY(-1px);
+}
+
+/* Remove the underline effect for the special button */
+.header-main a.nav-special::after {
+    display: none;
+}
+/* ==========================================================================
+   3. CAROUSEL SECTION
+   ========================================================================== */
+.carousal {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    margin-top: -50px;
+    position: relative;
+}
+
+.carousal .list .item {
+    position: absolute;
+    inset: 0;
+}
+
+.carousal .list .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Main Content (Text & Buttons) */
+.carousal .list .item .content {
+    position: absolute;
+    top: 10%;
+    width: 280px;
+    max-width: 80%;
+    right: 8%;
+    text-align: right;
+    color: white;
+    text-shadow: 0 5px 10px #0004;
+}
+
+.carousal .list .item .content .title {
+    font-weight: bold;
+    font-size: 3em;
+    color: orange;
+}
+
+.carousal .list .item .content .des {
+    font-size: medium;
+}
+
+.buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-order {
+    background-color: #DDB892;
+    color: #2b170a;
+    border: none;
+    font-family: Poppins;
+    font-weight: bold;
+    padding: 10px 30px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.btn-order:hover {
+    background-color: #EDE0D4;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(221, 184, 146, 0.4);
+
+}
+    /* ============ MEDIA QUERIES (Place at the very bottom) ============= */
+@media (min-width: 768px){
+  .carousal .list .item .content {
+    top: 15%;
+    width: 650px;
+    max-width: 100%;
+    right: 5%;
+  }
+  .carousal .list .item .content .title {
+    font-size: 5em;
+  }
+  
+}
+
+/* ==========================================================================
+   4. CAROUSEL THUMBNAILS & NAVIGATION
+   ========================================================================== */
+.thumbnail {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    width: max-content;
+    z-index: 100;
+    display: flex;
+    gap: 20px;
+}
+
+.thumbnail .item {
+    width: 150px;
+    height: 220px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.thumbnail .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.thumbnail .item .content {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+}
+
+.thumbnail .item .content .title {
+    font-weight: bold;
+}
+
+.arrows {
+    position: absolute;
+    top: 70%;
+    right: 38%;
+    width: 400px;
+    max-width: 30%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.arrows button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #DDB892;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .5s;
+    z-index: 100;
+}
+
+.arrows button:hover {
+    background-color: #eee;
+    color: #555;
+}
+
+.time {
+    height: 4px;
+    background: #DDB892;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    z-index: 1000;
+}
+
+  /* ============ MEDIA QUERIES ============= */
+@media (min-width: 768px){
+  .arrows {
+    top: 70%;
+    right: 28%;
+    gap: 15px;
+}
+
+.arrows button {
+    width: 50px;
+    height: 50px;
+}
+  
+}
+
+
+/* ==========================================================================
+   5. CAROUSEL ANIMATIONS (NEXT/PREV)
+   ========================================================================== */
+.carousal .list .item:nth-child(1) { z-index: 1; }
+
+.carousal .list .item:nth-child(1) .title,
+.carousal .list .item:nth-child(1) .des,
+.carousal .list .item:nth-child(1) .buttons {
+    transform: translateY(50px);
+    filter: blur(20px);
+    opacity: 0;
+    animation: showContent 0.5s 1s linear 1 forwards;
+}
+
+@keyframes showContent {
+    to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+.carousal .list .item:nth-child(1) .title { animation-delay: 1.2s; }
+.carousal .list .item:nth-child(1) .des { animation-delay: 1.4s; }
+.carousal .list .item:nth-child(1) .buttons { animation-delay: 1.6s; }
+
+.carousal.next .list .item:nth-child(1) img {
+    width: 150px;
+    height: 220px;
+    position: absolute;
+    left: 50%;
+    bottom: 50px;
+    border-radius: 20px;
+    animation: showImage 0.5s linear 1 forwards;
+}
+
+@keyframes showImage {
+    to { width: 100%; height: 100%; left: 0; bottom: 0; border-radius: 0; }
+}
+
+
+
+
+
+/*
+/* ==========================================================================
+   6. SCROLL SECTIONS (STORY & REVIEWS)
+   ========================================================================== */
+.story-section {
+    padding: 120px 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.story-content h2 {
+    font-size: 4em;
+    color: #EDE0D4;
+}
+
+.floating-img {
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 50px;
+    animation: float 15s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Glassmorphism Classes */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(237, 224, 212, 0.1);
+}
+
+.review-card {
+    min-width: 320px;
+    padding: 40px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+}
+
+/* Reveal on Scroll */
+.reveal {
+    opacity: 0;
+    transform: translateY(100px);
+    transition: all 1.2s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   7. FOOTER
+   ========================================================================== */
+footer {
+    background-color: #1a0f08;
+    padding: 100px 10% 40px;
+    border-top: 1px solid #7F5539;
+    color: #EDE0D4;
+}
+
+footer h3 {
+    color: #DDB892;
+    font-size: 2em;
+}
+
+/* ==========================================================================
+   8. AUTH MODAL (GLASS CARD)
+   ========================================================================== */
+.auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-overlay.active {
+    display: flex;
+}
+
+.auth-card {
+    width: 350px;
+    padding: 40px;
+    border-radius: 30px;
+    background: rgba(43, 23, 10, 0.6);
+    text-align: center;
+    position: relative;
+}
+
+.close-icon {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 24px;
+    color: #DDB892;
+    cursor: pointer;
+}
+
+.input-group {
+    position: relative;
+    margin: 30px 0;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+    border-bottom: 1px solid #DDB892;
+    background: transparent;
+    outline: none;
+}
+
+.input-group label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #aaa;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.input-group input:focus ~ label,
+.input-group input:valid ~ label {
+    top: -20px;
+    font-size: 12px;
+    color: #DDB892;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #DDB892;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    background: #EDE0D4;
+}
