@@ -67,6 +67,762 @@
     </nav>
 </header>
 <div class="app-shell">
+
+<main class="menu-container" data-prices-from-db="loaded-by-script">
+    <!-- Prices and out-of-stock status are loaded from database (get_products.php). Admin changes update the DB; refresh this page to see new prices. -->
+
+  <!-- Featured Section -->
+  <section class="featured-section">
+    <h2 class="section-title">✨ Today's Specials</h2>
+    <div class="featured-grid">
+      <div class="featured-card featured-large">
+        <div class="featured-badge">BEST SELLER</div>
+        <img src="images/berry latte.png" alt="Berry Latte">
+        <div class="featured-content">
+          <h3>Berry Latte</h3>
+          <div class="price">$280</div>
+        </div>
+      </div>
+      
+      <div class="featured-card">
+        <div class="featured-badge">NEW</div>
+        <img src="images/strawberry matcha.png" alt="Strawberry Matcha">
+        <div class="featured-content">
+          <h4>Strawberry Matcha</h4>
+          <div class="price">$275</div>
+        </div>
+      </div>
+      
+      <div class="featured-card">
+        <div class="featured-badge">SEASONAL</div>
+        <img src="images/caramel matcha.png" alt="Caramel Matcha">
+        <div class="featured-content">
+          <h4>Caramel Matcha</h4>
+          <div class="price">$275</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Drink Grid with Horizontal Scroll Sections -->
+  <div class="modern-grid-container">
     
+    <section class="category-section" id="Iced">
+      <div class="section-header">
+        <h2> 🫗 Iced Lattes</h2>
+        <a href="#Iced" class="view-all">View All</a>
+      </div>
+      <div class="horizontal-scroll">
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/strawberry latte.png" alt="Strawberry Latte">
+          </div>
+          <div class="drink-info">
+            <h4>Strawberry Latte</h4>
+            <p class="description">Fresh strawberry cream with espresso</p>
+            <div class="price-tag">$260</div>
+            <button class="modern-add-btn" data-name="strawberrylatte" data-price="260">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/cinnamon latte.png" alt="Cinnamon Latte">
+            <div class="popular-badge">🔥 Popular</div>
+          </div>
+          <div class="drink-info">
+            <h4>Cinnamon Latte</h4>
+            <p class="description">Spiced cinnamon with creamy latte</p>
+            <div class="price-tag">$260</div>
+            <button class="modern-add-btn" data-name="cinnamonlatte" data-price="260">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/caramel latte.png" alt="Caramel Latte">
+          </div>
+          <div class="drink-info">
+            <h4>Caramel Latte</h4>
+            <p class="description">Rich caramel drizzle on smooth latte</p>
+            <div class="price-tag">$260</div>
+            <button class="modern-add-btn" data-name="caramellatte" data-price="260">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/vanilla latte.png" alt="Vanilla Latte">
+          </div>
+          <div class="drink-info">
+            <h4>Vanilla Latte</h4>
+            <p class="description">Classic vanilla bean infused</p>
+            <div class="price-tag">$260</div>
+            <button class="modern-add-btn" data-name="vanillalatte" data-price="260">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/banana bread late .png" alt="Banana Bread Latte">
+          </div>
+          <div class="drink-info">
+            <h4>Banana Bread Latte</h4>
+            <p class="description">Warm banana bread flavors</p>
+            <div class="price-tag">$260</div>
+            <button class="modern-add-btn" data-name="bananabreadlatte" data-price="260">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/mocha latte.png" alt="Mocha Latte">
+          </div>
+          <div class="drink-info">
+            <h4>Mocha Latte</h4>
+            <p class="description">Chocolate espresso delight</p>
+            <div class="price-tag">$260</div>
+            <button class="modern-add-btn" data-name="Mochalatte" data-price="260">Add</button>
+          </div>
+        </div>
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/berry latte.png" alt="BerryLatte">
+          </div>
+          <div class="drink-info">
+            <h4>Berry Latte</h4>
+            <p class="description">Creamy, bright berry bliss</p>
+            <div class="price-tag">$280</div>
+            <button class="modern-add-btn" data-name="berrylatte" data-price="280">Add</button>
+          </div>
+        </div>
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/salted honey latte.png" alt="salted honey Latte">
+          </div>
+          <div class="drink-info">
+            <h4>Salted honey Latte</h4>
+            <p class="description">Rich latte, salted honey warmth</p>
+            <div class="price-tag">$260</div>
+            <button class="modern-add-btn" data-name="SaltedHonneyLatte" data-price="260">Add</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!-- Matcha Section -->
+    <section class="category-section" id="matcha">
+      <div class="section-header">
+        <h2>🍵 Matcha Collection</h2>
+        <a href="#matcha" class="view-all">View All</a>
+      </div>
+      <div class="horizontal-scroll">
+        <div class="drink-card modern-card matcha-card">
+          <div class="drink-image">
+            <img src="images/strawberry matcha.png" alt="Strawberry Matcha">
+            <div class="trending-badge">💚 Trending</div>
+          </div>
+          <div class="drink-info">
+            <h4>Strawberry Matcha</h4>
+            <p class="description">Sweet strawberry with premium matcha</p>
+            <div class="price-tag">$275</div>
+            <button class="modern-add-btn" data-name="strawberymatcha" data-price="275">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card matcha-card">
+          <div class="drink-image">
+            <img src="images/vanilla matcha.png" alt="Vanilla Matcha">
+          </div>
+          <div class="drink-info">
+            <h4>Vanilla Matcha</h4>
+            <p class="description">Vanilla infused ceremonial grade</p>
+            <div class="price-tag">$275</div>
+            <button class="modern-add-btn" data-name="vanillamatcha" data-price="275">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card matcha-card">
+          <div class="drink-image">
+            <img src="images/caramel matcha.png" alt="Caramel Matcha">
+          </div>
+          <div class="drink-info">
+            <h4>Caramel Matcha</h4>
+            <p class="description">Salted caramel matcha fusion</p>
+            <div class="price-tag">$275</div>
+            <button class="modern-add-btn" data-name="caramelmatcha" data-price="275">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card matcha-card">
+          <div class="drink-image">
+            <img src="images/cinnamon matcha.png" alt="Cinnamon Matcha">
+          </div>
+          <div class="drink-info">
+            <h4>Cinnamon Matcha</h4>
+            <p class="description">Spiced cinnamon twist</p>
+            <div class="price-tag">$275</div>
+            <button class="modern-add-btn" data-name="cinnamonmatcha" data-price="275">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card matcha-card">
+          <div class="drink-image">
+            <img src="images/mocha matcha.png" alt="Mocha Matcha">
+          </div>
+          <div class="drink-info">
+            <h4>Mocha Matcha</h4>
+            <p class="description">Chocolate matcha fusion</p>
+            <div class="price-tag">$275</div>
+            <button class="modern-add-btn" data-name="mochamatcha" data-price="275">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card matcha-card">
+          <div class="drink-image">
+            <img src="images/banana bread matcha.png" alt="Banana Bread  Matcha">
+          </div>
+          <div class="drink-info">
+            <h4>Banana Bread Matcha</h4>
+            <p class="description">Toasty banana bread, creamy matcha</p>
+            <div class="price-tag">$275</div>
+            <button class="modern-add-btn" data-name="bananabreadmatcha" data-price="275">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card matcha-card">
+          <div class="drink-image">
+            <img src="images/berry matcha.png" alt="Berry Matcha">
+          </div>
+          <div class="drink-info">
+            <h4>Berry Matcha</h4>
+            <p class="description">Vibrant berry-infused matcha latte</p>
+            <div class="price-tag">$295</div>
+            <button class="modern-add-btn" data-name="berrymatcha" data-price="295">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card matcha-card">
+          <div class="drink-image">
+            <img src="images/salted honey matcha.png" alt="Salted Honey Matcha">
+          </div>
+          <div class="drink-info">
+            <h4>Salted Honey Matcha</h4>
+            <p class="description">Sweet honey, salty matcha finish</p>
+            <div class="price-tag">$275</div>
+            <button class="modern-add-btn" data-name="saltedhoneymatcha" data-price="275">Add</button>
+          </div>
+        </div>
+        
+        
+      </div>
+    </section>
+
+
+  
+
+
+    <!-- Americano Section -->
+    <section class="category-section" id="americano">
+      <div class="section-header">
+        <h2>⚫ Americano Varieties</h2>
+        <a href="#americano" class="view-all">View All</a>
+      </div>
+      <div class="horizontal-scroll">
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/strawberry americano.png" alt="Strawberry Americano">
+          </div>
+          <div class="drink-info">
+            <h4>Strawberry Americano</h4>
+            <p class="description">Berry twist on classic americano</p>
+            <div class="price-tag">$200</div>
+            <button class="modern-add-btn" data-name="strawberryamericano" data-price="200">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/caramel americano.png" alt="Caramel Americano">
+          </div>
+          <div class="drink-info">
+            <h4>Caramel Americano</h4>
+            <p class="description">Caramel sweetness in bold coffee</p>
+            <div class="price-tag">$200</div>
+            <button class="modern-add-btn" data-name="caramelamericano" data-price="200">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/vanilla americano.png" alt="Vanilla Americano">
+          </div>
+          <div class="drink-info">
+            <h4>Vanilla Americano</h4>
+            <p class="description">Smooth vanilla infused</p>
+            <div class="price-tag">$200</div>
+            <button class="modern-add-btn" data-name="vanillaamericano" data-price="200">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/cinnamon americano.png" alt="cinnamon Americano">
+          </div>
+          <div class="drink-info">
+            <h4>Cinnamon Americano</h4>
+            <p class="description">Iced americano with cinnamon spice</p>
+            <div class="price-tag">$200</div>
+            <button class="modern-add-btn" data-name="cinnamonamericano" data-price="200">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/banana bread americano.png" alt="Bananabread Americano">
+          </div>
+          <div class="drink-info">
+            <h4>Banana Bread Americano</h4>
+            <p class="description">Iced americano with cinnamon spice</p>
+            <div class="price-tag">$200</div>
+            <button class="modern-add-btn" data-name="Bananabreadamericano" data-price="200">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/mocha americano.png" alt="mocha Americano">
+          </div>
+          <div class="drink-info">
+            <h4>Mocha Americano</h4>
+            <p class="description">Iced americano with mocha richness </p>
+            <div class="price-tag">$200</div>
+            <button class="modern-add-btn" data-name="mochaamericano" data-price="200">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/berry americano.png" alt="berry Americano">
+          </div>
+          <div class="drink-info">
+            <h4>Berry Americano</h4>
+            <p class="description">Iced americano with Berry richness </p>
+            <div class="price-tag">$210</div>
+            <button class="modern-add-btn" data-name="berryamericano" data-price="210">Add</button>
+          </div>
+        </div>
+
+         <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/salted honey americano.png" alt="SaltedHoney Americano">
+          </div>
+          <div class="drink-info">
+            <h4>Salted Honey Americano</h4>
+            <p class="description">Cool americano, salted honey finish</p>
+            <div class="price-tag">$200</div>
+            <button class="modern-add-btn" data-name="saltedhoneyamericano" data-price="200">Add</button>
+          </div>
+        </div>
+
+
+      </div>
+    </section>
+
+    <!-- Hot Drinks Section -->
+    <section class="category-section" id="hot">
+      <div class="section-header">
+        <h2>☕ Hot Classics</h2>
+        <a href="#hot" class="view-all">View All</a>
+      </div>
+      <div class="horizontal-scroll">
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/espresso.png" alt="Espresso">
+          </div>
+          <div class="drink-info">
+            <h4>Espresso</h4>
+            <p class="description">Pure single shot</p>
+            <div class="price-tag">$80</div>
+            <button class="modern-add-btn" data-name="Espresso" data-price="80">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/double espresso.png" alt="double espresso">
+            <div class="popular-badge"></div>
+          </div>
+          <div class="drink-info">
+            <h4>Double Espresso</h4>
+            <p class="description">double the shot double the energy</p>
+            <div class="price-tag">$120</div>
+            <button class="modern-add-btn" data-name="doubleespresso" data-price="120">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/latte.png" alt="Latte">
+            <div class="popular-badge">🔥 Popular</div>
+          </div>
+          <div class="drink-info">
+            <h4>Latte</h4>
+            <p class="description">Creamy steamed milk with espresso</p>
+            <div class="price-tag">$140</div>
+            <button class="modern-add-btn" data-name="latte" data-price="140">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/cappuccino.png" alt="Cappuccino">
+          </div>
+          <div class="drink-info">
+            <h4>Cappuccino</h4>
+            <p class="description">Equal parts espresso, milk, foam</p>
+            <div class="price-tag">$130</div>
+            <button class="modern-add-btn" data-name="cappuccino" data-price="130">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/americano.png" alt="americano">
+          </div>
+          <div class="drink-info">
+            <h4>Americano</h4>
+            <p class="description">Bold, smooth espresso with water</p>
+            <div class="price-tag">$100</div>
+            <button class="modern-add-btn" data-name="americano" data-price="100">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/mocha.png" alt="Mocha">
+          </div>
+          <div class="drink-info">
+            <h4>Mocha</h4>
+            <p class="description">Chocolate espresso delight</p>
+            <div class="price-tag">$160</div>
+            <button class="modern-add-btn" data-name="mocha" data-price="160">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/white mocha.png" alt="White Mocha">
+          </div>
+          <div class="drink-info">
+            <h4>White Mocha</h4>
+            <p class="description">Creamy white chocolate espresso delight</p>
+            <div class="price-tag">$170</div>
+            <button class="modern-add-btn" data-name="whitemocha" data-price="170">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/flat white.png" alt="Flat White">
+          </div>
+          <div class="drink-info">
+            <h4>Flat White</h4>
+            <p class="description">Smooth microfoam perfection</p>
+            <div class="price-tag">$140</div>
+            <button class="modern-add-btn" data-name="flatwhite" data-price="140">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/macchiato.png" alt="Macchiato">
+          </div>
+          <div class="drink-info">
+            <h4>Macchiato</h4>
+            <p class="description">Espresso "stained" with milk</p>
+            <div class="price-tag">$110</div>
+            <button class="modern-add-btn" data-name="macchiato" data-price="110">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/penut macchiato.png" alt="Penut Macchiato">
+          </div>
+          <div class="drink-info">
+            <h4>Penut Macchiato</h4>
+            <p class="description">Nutty espresso with creamy peanut notes</p>
+            <div class="price-tag">$190</div>
+            <button class="modern-add-btn" data-name="penutmacchiato" data-price="190">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/hot chocolata.png" alt="Hot Chocolate">
+          </div>
+          <div class="drink-info">
+            <h4>Hot Chocolate</h4>
+            <p class="description">Rich, creamy chocolate comfort drink</p>
+            <div class="price-tag">$210</div>
+            <button class="modern-add-btn" data-name="macchiato" data-price="210">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card">
+          <div class="drink-image">
+            <img src="images/milk.png" alt="Milk">
+          </div>
+          <div class="drink-info">
+            <h4>Milk</h4>
+            <p class="description">Fresh, creamy, wholesome milk</p>
+            <div class="price-tag">$170</div>
+            <button class="modern-add-btn" data-name="milk" data-price="170">Add</button>
+          </div>
+        </div>
+
+
+      </div>
+    </section>
+
+      <!-- Smoothies Section -->
+    <section class="category-section" id="juice">
+      <div class="section-header">
+        <h2>🥤 Smoothies & More</h2>
+        <a href="#juice" class="view-all">View All</a>
+      </div>
+      <div class="horizontal-scroll">
+
+        <div class="drink-card modern-card smoothie-card">
+          <div class="drink-image">
+            <img src="images/Avocado Smoothie.png" alt="Avocado Smoothie">
+            <div class="health-badge">🌿 Healthy</div>
+          </div>
+          <div class="drink-info">
+            <h4>Avocado Smoothie</h4>
+            <p class="description">Creamy avocado with honey</p>
+            <div class="price-tag">$250</div>
+            <button class="modern-add-btn" data-name="avocadosmoothie" data-price="250">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card smoothie-card">
+          <div class="drink-image">
+            <img src="images/strawberry smoothie.png" alt="Strawberry Smoothie">
+          </div>
+          <div class="drink-info">
+            <h4>Strawberry Smoothie</h4>
+            <p class="description">Fresh strawberries & yogurt</p>
+            <div class="price-tag">$250</div>
+            <button class="modern-add-btn" data-name="strawberrysmoothie" data-price="250">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card smoothie-card">
+          <div class="drink-image">
+            <img src="images/banana smoothie.png" alt="Banana Smoothie">
+          </div>
+          <div class="drink-info">
+            <h4>Banana Smoothie</h4>
+            <p class="description">Creamy banana with almond milk</p>
+            <div class="price-tag">$250</div>
+            <button class="modern-add-btn" data-name="bananasmoothie" data-price="250">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card smoothie-card">
+          <div class="drink-image">
+            <img src="images/papaye smoothie.png" alt="Avocado Smoothie">
+            <div class="health-badge"></div>
+          </div>
+          <div class="drink-info">
+            <h4>Papaya Smoothie</h4>
+            <p class="description">Creamy Papaya with honey</p>
+            <div class="price-tag">$250</div>
+            <button class="modern-add-btn" data-name="papayesmoothie" data-price="250">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card smoothie-card">
+          <div class="drink-image">
+            <img src="images/strawberry mojito.png" alt="Strawberry Mojito">
+          </div>
+          <div class="drink-info">
+            <h4>Strawberry Mojito</h4>
+            <p class="description">Fresh mint & strawberry refreshment</p>
+            <div class="price-tag">$190</div>
+            <button class="modern-add-btn" data-name="strawberrymojito" data-price="190">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card smoothie-card">
+          <div class="drink-image">
+            <img src="images/classic mojito.png" alt="Classic Mojito">
+          </div>
+          <div class="drink-info">
+            <h4>Classic Mojito</h4>
+            <p class="description">Traditional mint & lime</p>
+            <div class="price-tag">$170</div>
+            <button class="modern-add-btn" data-name="classicmojito" data-price="170">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card smoothie-card">
+          <div class="drink-image">
+            <img src="images/cinnamon mojito.png" alt="Cinnamon Mojito">
+          </div>
+          <div class="drink-info">
+            <h4>Cinnamon Mojito</h4>
+            <p class="description">Traditional cinnamon & lime</p>
+            <div class="price-tag">$190</div>
+            <button class="modern-add-btn" data-name="cinnamonmojito" data-price="190">Add</button>
+          </div>
+        </div>
+
+        
+      </div>
+    </section>
+
+    <!-- Snacks Section -->
+    <section class="category-section" id="snacks">
+      <div class="section-header">
+        <h2>🥐Snackies</h2>
+        <a href="#snacks" class="view-all">View All</a>
+      </div>
+      <div class="horizontal-scroll">
+
+        <div class="drink-card modern-card snack-card">
+          <div class="drink-image">
+            <img src="images/croissant.png" alt="Croissant">
+            <div class="health-badge">Fasting</div>
+          </div>
+          <div class="drink-info">
+            <h4>Croissant</h4>
+            <p class="description">Buttery, flaky, golden French pastry</p>
+            <div class="price-tag">$193</div>
+            <button class="modern-add-btn" data-name="croissant" data-price="193">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card snack-card">
+          <div class="drink-image">
+            <img src="images/muffin.png" alt="Muffin">
+          </div>
+          <div class="drink-info">
+            <h4>Muffin</h4>
+            <p class="description">Sweet, fluffy, bakery-fresh delight</p>
+            <div class="price-tag">$165</div>
+            <button class="modern-add-btn" data-name="muffin" data-price="165">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card snack-card">
+          <div class="drink-image">
+            <img src="images/scone.png" alt="Scone">
+          </div>
+          <div class="drink-info">
+            <h4>Scone</h4>
+            <p class="description">Buttery, crumbly, lightly sweet pastry</p>
+            <div class="price-tag">$179</div>
+            <button class="modern-add-btn" data-name="scone" data-price="179">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card snack-card">
+          <div class="drink-image">
+            <img src="images/banana bread slice.png" alt="Banana Bread Slice">
+            <div class="health-badge">Fasting</div>
+          </div>
+          <div class="drink-info">
+            <h4>Banana Bread Slice</h4>
+            <p class="description">Moist, sweet, comforting banana loaf</p>
+            <div class="price-tag">$193</div>
+            <button class="modern-add-btn" data-name="bananabreadslice" data-price="193">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card snack-card">
+          <div class="drink-image">
+            <img src="images/cinnamon roll.png" alt="Cinnamon Roll">
+          </div>
+          <div class="drink-info">
+            <h4>Cinnamon Roll</h4>
+            <p class="description">Warm, sticky, indulgent cinnamon delight</p>
+            <div class="price-tag">$220</div>
+            <button class="modern-add-btn" data-name="cinnamonroll" data-price="220">Add</button>
+          </div>
+        </div>
+        
+        <div class="drink-card modern-card snack-card">
+          <div class="drink-image">
+            <img src="images/cookie.png" alt="Cookie">
+          </div>
+          <div class="drink-info">
+            <h4>Cookie</h4>
+            <p class="description">Sweet, freshly baked classic cookie</p>
+            <div class="price-tag">$138</div>
+            <button class="modern-add-btn" data-name="cookie" data-price="138">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card snack-card">
+          <div class="drink-image">
+            <img src="images/brownie.png" alt="Brownie">
+          </div>
+          <div class="drink-info">
+            <h4>Brownie</h4>
+            <p class="description">Rich, fudgy, chocolate indulgence</p>
+            <div class="price-tag">$193</div>
+            <button class="modern-add-btn" data-name="brownie" data-price="193">Add</button>
+          </div>
+        </div>
+
+        <div class="drink-card modern-card snack-card">
+          <div class="drink-image">
+            <img src="images/granola bar.png" alt="Granola Bar">
+            <div class="health-badge">Fasting</div>
+          </div>
+          <div class="drink-info">
+            <h4>Granola Bar</h4>
+            <p class="description">Nutty, chewy, wholesome snack bar</p>
+            <div class="price-tag">$151</div>
+            <button class="modern-add-btn" data-name="granolabar" data-price="151">Add</button>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    
+    
+  </div>
+</main>
+
+</div>
+
+
+
+<div class="cart" id="cart">
+  <div class="cart-header">
+    <h3>Your Order</h3>
+    <button id="close-cart" class="close-btn">&times;</button>
+  </div>
+
+  <div class="cart-items" id="cart-items">
+    </div>
+
+  <div class="cart-footer">
+    <div class="total-row">
+        <span>Total Amount</span>
+        <span>$<span id="total">0.00</span></span>
+    </div>
+<button id="checkout-now" class="checkout-btn" type="button">
+  Checkout Now
+</button>
+
+  </div>
+</div>   
+
 </body>
 </html>
