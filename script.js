@@ -1199,3 +1199,284 @@ function showCanvasError(message) {
     `;
     canvas.parentElement.appendChild(overlay);
 }
+
+// =============================================
+// DRINK BUILDER UI FUNCTIONS
+// =============================================
+
+function resetSelections() {
+    drinkBuilderState.selectedType = null;
+    drinkBuilderState.selectedMilk = null;
+    drinkBuilderState.selectedFlavor = null;
+    drinkBuilderState.selectedTopping = null;
+    drinkBuilderState.currentStep = 1;
+    
+    // Reset UI
+    document.querySelectorAll('.step').forEach(step => {
+        step.classList.remove('active');
+    });
+    
+    const firstStep = document.querySelector(`.step[data-step="1"]`);
+    if (firstStep) firstStep.classList.add('active');
+    
+    document.querySelectorAll('.step-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    const firstContent = document.getElementById('step-1');
+    if (firstContent) firstContent.classList.add('active');
+    
+    // Update navigation buttons
+    const prevBtn = document.getElementById('prev-step');
+    const nextBtn = document.getElementById('next-step');
+    const addBtn = document.getElementById('add-to-cart-final');
+    
+    if (prevBtn) prevBtn.disabled = true;
+    if (nextBtn) nextBtn.style.display = 'block';
+    if (addBtn) addBtn.style.display = 'none';
+    
+    // Clear selection highlights
+    document.querySelectorAll('.drinktype-option, .milk-option, .flavor-option, .topping-option').forEach(option => {
+        option.classList.remove('selected');
+    });
+    
+    // Update selection display
+    updateSelectionDisplay();
+}
+
+function setupOptionSelection() {
+    // Drink type options
+    const drinkTypeOptions = document.querySelectorAll('.drinktype-option');
+    drinkTypeOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            document.querySelectorAll('.drinktype-option').forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            drinkBuilderState.selectedType = option.dataset.type;
+            updateSelectionDisplay();
+            
+            // Create liquid if not exists, or recreate with new type
+            if (!appState.threejs.liquidMesh) {
+                createLiquidForCup();
+            }
+            applyCustomization();
+        });
+    });
+    
+    // Milk options
+    const milkOptions = document.querySelectorAll('.milk-option');
+    milkOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            document.querySelectorAll('.milk-option').forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            drinkBuilderState.selectedMilk = option.dataset.milk;
+            updateSelectionDisplay();
+            applyCustomization();
+        });
+    });
+    
+    // Flavor options
+    const flavorOptions = document.querySelectorAll('.flavor-option');
+    flavorOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            document.querySelectorAll('.flavor-option').forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            drinkBuilderState.selectedFlavor = option.dataset.flavor;
+            updateSelectionDisplay();
+            applyCustomization();
+        });
+    });
+    
+    // Topping options
+    const toppingOptions = document.querySelectorAll('.topping-option');
+    toppingOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            document.querySelectorAll('.topping-option').forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            drinkBuilderState.selectedTopping = option.dataset.topping;
+            updateSelectionDisplay();
+            applyCustomization();
+        });
+    });
+}
+
+function updateSelectionDisplay() {
+    const typeDisplay = document.getElementById('selected-type');
+    const milkDisplay = document.getElementById('selected-milk');
+    const flavorDisplay = document.getElementById('selected-flavor');
+    const toppingDisplay = document.getElementById('selected-topping');
+    const priceDisplay = document.getElementById('custom-drink-price');
+    
+    if (typeDisplay) {
+        typeDisplay.textContent = drinkBuilderState.selectedType ? 
+            drinkBuilderState.selectedType.charAt(0).toUpperCase() + drinkBuilderState.selectedType.slice(1) : 'Not selected';
+    }
+    
+    if (milkDisplay) {
+        milkDisplay.textContent = drinkBuilderState.selectedMilk ? 
+            drinkBuilderState.selectedMilk.charAt(0).toUpperCase() + drinkBuilderState.selectedMilk.slice(1) : 
+            (drinkBuilderState.selectedType === 'americano' ? 'Not needed' : 'Not selected');
+    }
+    
+    if (flavorDisplay) {
+        flavorDisplay.textContent = drinkBuilderState.selectedFlavor ? 
+            (drinkBuilderState.selectedFlavor === 'none' ? 'None' : 
+             drinkBuilderState.selectedFlavor.charAt(0).toUpperCase() + drinkBuilderState.selectedFlavor.slice(1)) : 'Not selected';
+    }
+    
+    if (toppingDisplay) {
+        toppingDisplay.textContent = drinkBuilderState.selectedTopping ? 
+            (drinkBuilderState.selectedTopping === 'none' ? 'None' : 
+             drinkBuilderState.selectedTopping.charAt(0).toUpperCase() + drinkBuilderState.selectedTopping.slice(1)) : 'Not selected';
+    }
+    
+    // Update price
+    updatePrice();
+}
+
+function updatePrice() {
+    let price = 0;
+    
+    if (drinkBuilderState.selectedType && CONFIG.PRICES[drinkBuilderState.selectedType]) {
+        price = CONFIG.PRICES[drinkBuilderState.selectedType];
+    } else {
+        price = 5.99; // Default price
+    }
+    
+    // Add milk price if not whole milk
+    if (drinkBuilderState.selectedMilk && drinkBuilderState.selectedMilk !== 'whole' && 
+        CONFIG.PRICES[drinkBuilderState.selectedMilk]) {
+        price += CONFIG.PRICES[drinkBuilderState.selectedMilk];
+    }
+    
+    // Add flavor price if selected and not 'none'
+    if (drinkBuilderState.selectedFlavor && drinkBuilderState.selectedFlavor !== 'none' && 
+        CONFIG.PRICES[drinkBuilderState.selectedFlavor]) {
+        price += CONFIG.PRICES[drinkBuilderState.selectedFlavor];
+    }
+    
+    // Add topping price if selected and not 'none'
+    if (drinkBuilderState.selectedTopping && drinkBuilderState.selectedTopping !== 'none' && 
+        CONFIG.PRICES[drinkBuilderState.selectedTopping]) {
+        price += CONFIG.PRICES[drinkBuilderState.selectedTopping];
+    }
+    
+    const priceDisplay = document.getElementById('custom-drink-price');
+    if (priceDisplay) {
+        priceDisplay.textContent = price.toFixed(2);
+    }
+    
+    // Store in app state
+    appState.config.price = price;
+}
+
+function handlePrevStep() {
+    if (drinkBuilderState.currentStep > 1) {
+        drinkBuilderState.currentStep--;
+        updateStepUI();
+    }
+}
+
+function handleNextStep() {
+    if (drinkBuilderState.currentStep < 3) {
+        // Validate current step before proceeding
+        if (drinkBuilderState.currentStep === 1 && !drinkBuilderState.selectedType) {
+            alert('Please select a drink type first!');
+            return;
+        }
+        
+        if (drinkBuilderState.currentStep === 2 && !drinkBuilderState.selectedMilk && 
+            drinkBuilderState.selectedType !== 'americano') {
+            alert('Please select a milk type!');
+            return;
+        }
+        
+        drinkBuilderState.currentStep++;
+        updateStepUI();
+    }
+}
+
+function updateStepUI() {
+    // Update progress steps
+    document.querySelectorAll('.step').forEach(step => {
+        const stepNum = parseInt(step.dataset.step);
+        step.classList.toggle('active', stepNum === drinkBuilderState.currentStep);
+    });
+    
+    // Update step content
+    document.querySelectorAll('.step-content').forEach(content => {
+        const contentId = content.id;
+        const contentStep = parseInt(contentId.split('-')[1]);
+        content.classList.toggle('active', contentStep === drinkBuilderState.currentStep);
+    });
+    
+    // Update navigation buttons
+    const prevBtn = document.getElementById('prev-step');
+    const nextBtn = document.getElementById('next-step');
+    const addToCartBtn = document.getElementById('add-to-cart-final');
+    
+    if (prevBtn) prevBtn.disabled = drinkBuilderState.currentStep === 1;
+    
+    if (drinkBuilderState.currentStep === 3) {
+        if (nextBtn) nextBtn.style.display = 'none';
+        if (addToCartBtn) addToCartBtn.style.display = 'block';
+    } else {
+        if (nextBtn) nextBtn.style.display = 'block';
+        if (addToCartBtn) addToCartBtn.style.display = 'none';
+    }
+}
+
+function addCustomDrinkToCart() {
+    if (!drinkBuilderState.selectedType) {
+        alert('Please select a drink type first!');
+        return;
+    }
+    
+    if (!drinkBuilderState.selectedMilk && drinkBuilderState.selectedType !== 'americano') {
+        alert('Please select a milk type!');
+        return;
+    }
+    
+    // Create a unique name for the custom drink
+    const drinkName = `Custom ${drinkBuilderState.selectedType.charAt(0).toUpperCase() + drinkBuilderState.selectedType.slice(1)}`;
+    const priceElement = document.getElementById('custom-drink-price');
+    const price = priceElement ? parseFloat(priceElement.textContent) : 5.99;
+    
+    // Create custom drink item
+    const customItem = { 
+        name: drinkName, 
+        price: price, 
+        quantity: 1,
+        fasting: drinkBuilderState.selectedMilk === 'whole' ? "Non-Fasting (Milk)" : "Fasting (Alternative Milk)",
+        sugar: "Normal",
+        custom: true,
+        type: drinkBuilderState.selectedType,
+        milk: drinkBuilderState.selectedMilk || 'none',
+        flavor: drinkBuilderState.selectedFlavor || 'none',
+        topping: drinkBuilderState.selectedTopping || 'none'
+    };
+    
+    // Get or create the cartData array
+    if (typeof window.cartData === 'undefined') {
+        window.cartData = [];
+    }
+    
+    // Add the custom drink to the cart
+    window.cartData.push(customItem);
+    
+    // Update the cart UI
+    updateCartUI();
+    
+    // Close the custom drink modal
+    const modal = document.getElementById('drinkModal');
+    if (modal) modal.style.display = 'none';
+    
+    // Clean up 3D scene
+    cleanup3DScene();
+    
+    // Show the cart sidebar
+    const cart = document.getElementById("cart");
+    if (cart) cart.classList.add("open");
+    
+    // Show success message
+    alert('✅ Custom drink added to cart!');
+}
