@@ -1480,3 +1480,320 @@ function addCustomDrinkToCart() {
     // Show success message
     alert('✅ Custom drink added to cart!');
 }
+// =============================================
+// CART MANAGEMENT FUNCTIONS
+// =============================================
+
+function updateCartUI() {
+    const cartItemsContainer = document.getElementById('cart-items');
+    const totalDisplay = document.getElementById('total');
+    const cartBadge = document.querySelector('.badge');
+    
+    if (!cartItemsContainer || !totalDisplay || !cartBadge || !window.cartData) {
+        return;
+    }
+    
+    // Clear current cart items
+    cartItemsContainer.innerHTML = "";
+    let total = 0;
+    let count = 0;
+    
+    // Add all items to cart
+    window.cartData.forEach((item, index) => {
+        total += item.price * item.quantity;
+        count += item.quantity;
+        
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.style.display = "flex"; 
+        div.style.width = "100%";
+        
+        // Check if it's a custom drink to show custom details
+        const customDetails = item.custom ? 
+            `<div style="color: #9C6644; font-size: 0.85rem; margin: 4px 0;">
+                ${item.type.charAt(0).toUpperCase() + item.type.slice(1)} • 
+                ${item.milk !== 'none' ? item.milk.charAt(0).toUpperCase() + item.milk.slice(1) + ' Milk' : 'No Milk'} • 
+                ${item.flavor !== 'none' ? item.flavor.charAt(0).toUpperCase() + item.flavor.slice(1) : 'No Flavor'} • 
+                ${item.topping === 'none' ? 'No Topping' : item.topping.charAt(0).toUpperCase() + item.topping.slice(1)}
+            </div>` : 
+            `<div style="color: #9C6644; font-size: 0.85rem; margin: 4px 0;">
+                ${item.fasting} • ${item.sugar}
+            </div>`;
+        
+        div.innerHTML = `
+            <div class="item-info" style="flex: 1;">
+                <strong style="text-transform: capitalize; font-family: 'Inter', sans-serif;">${item.name}</strong>
+                ${customDetails}
+                <small style="color: #5d4037;">${item.quantity} x $${item.price.toFixed(2)}</small>
+            </div>
+            <div style="text-align: right; min-width: 80px;">
+                <div style="font-weight: 800; color: #5d4037; margin-bottom: 8px;">$${(item.price * item.quantity).toFixed(2)}</div>
+                <button class="remove-btn" onclick="removeCartItem(${index})">Remove</button>
+            </div>
+        `;
+        cartItemsContainer.appendChild(div);
+    });
+    
+    // Update total and badge
+    totalDisplay.textContent = total.toFixed(2);
+    cartBadge.textContent = count;
+}
+
+window.removeCartItem = function(index) {
+    if (window.cartData && window.cartData.length > index) {
+        window.cartData.splice(index, 1);
+        updateCartUI();
+    }
+};
+
+// Make sure updateCartUI is globally accessible
+window.updateCartUI = updateCartUI;
+
+// Make createSimpleCup accessible from error overlay
+window.createSimpleCup = createSimpleCup;
+
+// Helper function to update price elements
+function updatePriceElement(element, price) {
+    // Update price tag in the same card
+    const priceTag = element.closest('.drink-card, .featured-card')?.querySelector('.price-tag');
+    if (priceTag) {
+        priceTag.textContent = `$${parseFloat(price).toFixed(0)}`;
+    }
+    
+    // Update data-price attribute on buttons
+    if (element.hasAttribute('data-price')) {
+        element.setAttribute('data-price', parseFloat(price).toFixed(0));
+    }
+}
+
+// Helper function to update card price
+function updateCardPrice(card, price) {
+    const priceTag = card.querySelector('.price-tag');
+    const button = card.querySelector('[data-name]');
+    
+    if (priceTag) {
+        priceTag.textContent = `$${parseFloat(price).toFixed(0)}`;
+        priceTag.removeAttribute('data-db-pending');
+    }
+    if (button) {
+        button.setAttribute('data-price', parseFloat(price).toFixed(0));
+    }
+}
+
+// Helper: set in-stock / out-of-stock state on card (from admin)
+function setCardStockState(card, isAvailable) {
+    const button = card.querySelector('.modern-add-btn, .featured-add-btn, [data-name]');
+    if (!button) return;
+    button.setAttribute('data-available', isAvailable);
+    if (isAvailable === '0') {
+        card.classList.add('out-of-stock');
+        button.textContent = 'Out of stock';
+        button.disabled = true;
+    } else {
+        card.classList.remove('out-of-stock');
+        button.textContent = 'Add';
+        button.disabled = false;
+    }
+}
+
+// Load products from database and update prices dynamically
+function getProductsApiUrl() {
+    if (window.location.protocol === 'file:') return null;
+    // Relative URL works on WAMP/XAMPP: same folder as current page
+    return 'get_products.php';
+}
+
+async function loadProductsAndUpdatePrices() {
+    function showError(msg, isWarning) {
+        let el = document.getElementById('db-status-msg');
+        if (!el) {
+            el = document.createElement('div');
+            el.id = 'db-status-msg';
+            el.style.cssText = 'position:fixed;top:10px;right:10px;padding:12px 16px;max-width:320px;border-radius:8px;z-index:99999;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,0.25);';
+            document.body.appendChild(el);
+        }
+        el.style.background = isWarning ? '#fff3cd' : '#f8d7da';
+        el.style.border = '2px solid ' + (isWarning ? '#ffc107' : '#dc3545');
+        el.style.color = '#333';
+        el.innerHTML = msg;
+        el.style.display = 'block';
+    }
+
+    try {
+        const apiUrl = getProductsApiUrl();
+        if (!apiUrl) {
+            showError('⚠️ Open this page via a web server (e.g. <strong>http://localhost/aaaaaa/</strong>), not by double‑clicking the file. Prices load from the database.');
+            return;
+        }
+        console.log('🔄 Fetching products from:', apiUrl);
+        const response = await fetch(apiUrl + (apiUrl.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now());
+        let products;
+        try {
+            products = await response.json();
+        } catch (parseErr) {
+            const text = await response.text().catch(() => '');
+            if (!response.ok) {
+                showError('get_products.php not found (HTTP ' + response.status + '). Open the site via <strong>http://localhost/yourfolder/</strong> where your files are.');
+            } else {
+                showError('Server returned invalid response. Check that get_products.php and db.php are in the same folder and PHP is running.');
+            }
+            console.error('Response was not JSON:', text.slice(0, 200));
+            return;
+        }
+
+        if (!response.ok) {
+            showError(products && products.error ? products.error : 'Server error ' + response.status);
+            return;
+        }
+
+        if (products && products.error) {
+            showError('Database: ' + products.error);
+            console.error("❌", products.error);
+            return;
+        }
+
+        if (!Array.isArray(products) || products.length === 0) {
+            showError('No products in database. Run <strong>database_schema.sql</strong> in phpMyAdmin (database: maggs_coffee).');
+            console.log('⚠️ No products found in database');
+            return;
+        }
+
+        console.log(`📦 Found ${products.length} products in database:`, products);
+
+        // Build availability map for out-of-stock check when user taps Add (handle string "0"/"1" from DB)
+        window.productsByNormalizedName = {};
+        products.forEach(p => {
+            const norm = (p.name || '').toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
+            if (norm) {
+                window.productsByNormalizedName[norm] = { 
+                    is_available: (p.is_available == 1 || p.is_available === '1') ? 1 : 0,
+                    name: p.name,
+                    price: p.price
+                };
+            }
+        });
+        console.log("📋 Products map:", window.productsByNormalizedName);
+        
+        let updatedCount = 0;
+        
+        // Update prices and availability for each product
+        products.forEach(product => {
+            // Normalize product name for matching (lowercase, remove spaces/special chars)
+            const normalizedName = product.name.toLowerCase()
+                .replace(/\s+/g, '')
+                .replace(/[^a-z0-9]/g, '');
+            const isAvailable = product.is_available == 1 ? '1' : '0';
+            
+            console.log(`🔍 Looking for: "${product.name}" (normalized: "${normalizedName}")`);
+            
+            let found = false;
+            
+            // Strategy 1: Match by h4 title text (most reliable - matches what user sees)
+            const allCards = document.querySelectorAll('.drink-card');
+            allCards.forEach(card => {
+                const titleElement = card.querySelector('h4');
+                if (titleElement) {
+                    const cardTitle = titleElement.textContent.trim();
+                    const normalizedCardTitle = cardTitle.toLowerCase()
+                        .replace(/\s+/g, '')
+                        .replace(/[^a-z0-9]/g, '');
+                    
+                    // Exact match only (no partial) so "Americano" doesn't match "Strawberry Americano", and "Espresso" doesn't match "Double Espresso"
+                    if (normalizedName === normalizedCardTitle) {
+                        console.log(`  ✓ Found exact match: "${cardTitle}" → Price: ${product.price}, Stock: ${isAvailable}`);
+                        updateCardPrice(card, product.price);
+                        setCardStockState(card, isAvailable);
+                        updatedCount++;
+                        found = true;
+                    }
+                    else if (product.name.toLowerCase().trim() === cardTitle.toLowerCase().trim()) {
+                        console.log(`  ✓ Found direct text match: "${product.name}" = "${cardTitle}" → Price: ${product.price}, Stock: ${isAvailable}`);
+                        updateCardPrice(card, product.price);
+                        setCardStockState(card, isAvailable);
+                        updatedCount++;
+                        found = true;
+                    }
+                }
+            });
+            
+            // Strategy 2: Find elements by exact data-name match (if not found by title)
+            if (!found) {
+                const exactMatch = document.querySelectorAll(`[data-name="${normalizedName}"]`);
+                if (exactMatch.length > 0) {
+                    console.log(`  ✓ Found ${exactMatch.length} match(es) by data-name`);
+                    exactMatch.forEach(element => {
+                        updatePriceElement(element, product.price);
+                        element.setAttribute('data-available', isAvailable);
+                        const card = element.closest('.drink-card, .featured-card');
+                        if (card) setCardStockState(card, isAvailable);
+                        updatedCount++;
+                    });
+                    found = true;
+                }
+            }
+            
+            // Strategy 3: Update featured section by title match
+            const featuredCards = document.querySelectorAll('.featured-card');
+            featuredCards.forEach(card => {
+                const titleElement = card.querySelector('h3, h4');
+                if (titleElement) {
+                    const cardTitle = titleElement.textContent.trim().toLowerCase()
+                        .replace(/\s+/g, '')
+                        .replace(/[^a-z0-9]/g, '');
+                    if (cardTitle && normalizedName === cardTitle) {
+                        console.log(`  ✓ Found featured card match: "${titleElement.textContent}"`);
+                        const priceElement = card.querySelector('.price');
+                        if (priceElement) {
+                            priceElement.textContent = `$${parseFloat(product.price).toFixed(0)}`;
+                            priceElement.removeAttribute('data-db-pending');
+                            updatedCount++;
+                        }
+                        setCardStockState(card, isAvailable);
+                    }
+                }
+            });
+            
+            if (!found) {
+                console.warn(`  ⚠️ No match found for "${product.name}" (normalized: "${normalizedName}")`);
+                console.warn(`     Try checking if the HTML has a card with title matching "${product.name}"`);
+            }
+        });
+        
+        console.log(`✅ Updated ${updatedCount} price element(s) from database`);
+        
+        // Show status message
+        let statusMsg = document.getElementById('db-status-msg');
+        if (!statusMsg) {
+            statusMsg = document.createElement('div');
+            statusMsg.id = 'db-status-msg';
+            statusMsg.style.cssText = 'position:fixed;top:10px;right:10px;padding:10px 15px;background:#fff;border:2px solid #9C6644;border-radius:8px;z-index:9999;font-size:12px;box-shadow:0 2px 10px rgba(0,0,0,0.2);';
+            document.body.appendChild(statusMsg);
+        }
+        
+        if (updatedCount === 0 && products.length > 0) {
+            statusMsg.innerHTML = `⚠️ No products matched!<br>Check console (F12) for details.`;
+            statusMsg.style.background = '#fff3cd';
+            statusMsg.style.borderColor = '#ffc107';
+            console.error("⚠️ WARNING: No products matched! Check product names in database match HTML card titles.");
+            console.log("Sample DB product names:", products.slice(0, 5).map(p => p.name));
+            console.log("Sample HTML titles:", Array.from(document.querySelectorAll('.drink-card h4')).slice(0, 5).map(h => h.textContent.trim()));
+        } else if (updatedCount > 0) {
+            statusMsg.innerHTML = `✅ Loaded ${updatedCount} products from database`;
+            statusMsg.style.background = '#d4edda';
+            statusMsg.style.borderColor = '#28a745';
+            setTimeout(() => statusMsg.remove(), 3000);
+        } else {
+            statusMsg.innerHTML = `⚠️ No products in database`;
+            statusMsg.style.background = '#fff3cd';
+            statusMsg.style.borderColor = '#ffc107';
+        }
+    } catch (e) {
+        console.error("❌ Error loading products:", e);
+    }
+}
+
+// Make function globally accessible
+window.loadProductsAndUpdatePrices = loadProductsAndUpdatePrices;
+
+// Manual refresh function (call from browser console: loadProductsAndUpdatePrices())
+console.log("💡 Tip: Open browser console (F12) and type: loadProductsAndUpdatePrices() to manually refresh prices from database");
