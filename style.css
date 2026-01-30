@@ -1282,3 +1282,429 @@ body.dark-theme .logout-btn {
         min-height: 350px;
     }
 }
+
+/* ============================================= */
+/* MODERNIZED MENU STYLES  */
+/* ============================================= */
+
+/* Category Filter Tabs */
+.category-filters {
+  display: flex;
+  gap: 12px;
+  padding: 20px;
+  overflow-x: auto;
+  background: #FFFBF7;
+  border-radius: 20px;
+  margin: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.filter-btn {
+  padding: 12px 24px;
+  border: 2px solid #DDB892;
+  background: white;
+  color: #5d4037;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.filter-btn:hover {
+  border-color: #9C6644;
+  transform: translateY(-2px);
+}
+
+.filter-btn.active {
+  background: #9C6644;
+  color: white;
+  border-color: #9C6644;
+}
+
+/* Featured Section */
+.featured-section {
+  padding: 20px;
+  margin: 20px;
+  background: linear-gradient(135deg, #FFFBF7 0%, #F9F1E8 100%);
+  border-radius: 25px;
+}
+
+.section-title {
+  color: #5d4037;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 20px;
+  height: 320px;
+}
+
+@media (max-width: 768px) {
+  .featured-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+    gap: 15px;
+  }
+  
+  .featured-large {
+    height: 280px;
+  }
+}
+
+.featured-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.featured-card:hover {
+  transform: translateY(-5px);
+}
+
+.featured-large {
+  grid-row: span 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* FIXED: Featured card images */
+.featured-card img {
+  width: 100%;
+  height: 60%;
+  object-fit: contain;
+  background: #FFFBF7;
+  padding: 10px;
+}
+
+.featured-content {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.featured-content h3 {
+  color: #5d4037;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.featured-content h4 {
+  color: #5d4037;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.featured-content p {
+  color: #9C6644;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.featured-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #9C6644;
+  color: white;
+  padding: 6px 15px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.price {
+  color: #5d4037;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  margin: 10px 0;
+}
+
+
+/* Category Sections */
+.modern-grid-container {
+  padding: 0 20px;
+}
+
+.category-section {
+  margin: 40px 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding: 0 10px;
+}
+
+.section-header h2 {
+  color: #5d4037;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.view-all {
+  color: #9C6644;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: 2px solid #DDB892;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.view-all:hover {
+  background: #9C6644;
+  color: white;
+  border-color: #9C6644;
+}
+
+/* Horizontal Scroll */
+.horizontal-scroll {
+  display: flex;
+  gap: 25px;
+  overflow-x: auto;
+  padding: 20px 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #9C6644 #E6CCB2;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-track {
+  background: #F9F1E8;
+  border-radius: 10px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb {
+  background: #9C6644;
+  border-radius: 10px;
+}
+
+/* Modern Card Design  */
+.modern-card {
+  min-width: 250px;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+}
+
+.modern-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  border-color: #9C6644;
+}
+
+.drink-image {
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  background: #FFFBF7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+/* FIXED: Image sizing to fit properly */
+.drink-image img {
+  width: auto;
+  height: 140px;
+  max-width: 90%;
+  object-fit: contain;
+  transition: transform 0.5s ease;
+}
+
+.modern-card:hover .drink-image img {
+  transform: scale(1.1);
+}
+
+.popular-badge,
+.trending-badge,
+.health-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: white;
+  z-index: 2;
+}
+
+.popular-badge {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+}
+
+.trending-badge {
+  background: linear-gradient(135deg, #7BA05B 0%, #4CAF50 100%);
+}
+
+.health-badge {
+  background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+}
+
+.drink-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.drink-info h4 {
+  color: #5d4037;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin: 0;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+.description {
+  color: #9C6644;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  opacity: 0.8;
+  margin: 5px 0;
+  min-height: 40px;
+}
+
+.price-tag {
+  color: #5d4037;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  margin: 5px 0;
+}
+
+.modern-add-btn {
+  background: #9C6644;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+  font-family: 'Inter', sans-serif;
+  margin-top: 5px;
+  width: 100%;
+}
+
+.modern-add-btn:hover {
+  background: #5d4037;
+  transform: translateY(-2px);
+}
+
+/* Special Card Styles */
+.matcha-card {
+  border-left: 4px solid #7BA05B;
+}
+
+.smoothie-card {
+  border-left: 4px solid #c967bddb;
+}
+.snack-card {
+  border-left: 4px solid #9C6644;
+}
+
+/* Animation for new items */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.category-section {
+  animation: slideIn 0.5s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .category-filters {
+    gap: 8px;
+    padding: 15px;
+  }
+  
+  .filter-btn {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+  
+  .section-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .modern-card {
+    min-width: 200px;
+  }
+  
+  .drink-image {
+    height: 150px;
+  }
+  
+  .drink-image img {
+    height: 120px;
+  }
+  
+  .drink-info {
+    padding: 15px;
+  }
+  
+  .drink-info h4 {
+    font-size: 1.1rem;
+    min-height: 44px;
+  }
+
+}
+
+.option-group.blurred {
+    filter: blur(4px);
+    pointer-events: none; 
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
