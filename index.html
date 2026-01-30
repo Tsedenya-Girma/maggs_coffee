@@ -824,5 +824,182 @@
   </div>
 </div>   
 
+<div class="custom-drink-trigger" id="openModal">
+    <span>Make your own drink</span>
+</div>
+
+<!-- 3D Drink Builder Modal -->
+<div class="modal-overlay" id="drinkModal">
+    <div class="modal-content large-modal">
+        <button class="close-btn" id="closeModal">&times;</button>
+        <h2>Make Your Custom Drink</h2>
+        <div class="customization-progress">
+            <div class="step active" data-step="1">Drink Type</div>
+            <div class="step" data-step="2">Milk & Flavor</div>
+            <div class="step" data-step="3">Topping</div>
+        </div>
+        
+        <div class="customization-container">
+            <!-- 3D Canvas - Fixed with explicit dimensions -->
+            <div class="drink-canvas-container">
+                <canvas id="drinkCanvas" width="600" height="400"></canvas>
+                <div class="drink-controls">
+                    <button id="rotate-left" title="Rotate Left">↶</button>
+                    <button id="rotate-right" title="Rotate Right">↷</button>
+                    <button id="toggle-rotation" title="Stop Auto Rotation">⏸️ Stop</button>
+                </div>
+            </div>
+            
+            <!-- Options Panel -->
+            <div class="options-panel">
+                <div class="step-content active" id="step-1">
+                    <h3>Choose Your Drink Type</h3>
+                    <div class="option-grid">
+                        <div class="drinktype-option" data-type="latte">
+                            <div class="option-preview latte"></div>
+                            <span>Latte</span>
+                        </div>
+                        <div class="drinktype-option" data-type="matcha">
+                            <div class="option-preview matcha"></div>
+                            <span>Matcha</span>
+                        </div>
+                        <div class="drinktype-option" data-type="americano">
+                            <div class="option-preview americano"></div>
+                            <span>Americano</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-content" id="step-2">
+                    <h3>Choose Milk & Flavor</h3>
+                    <div class="milk-section">
+                        <h4>Milk Type</h4>
+                        <div class="option-grid milk-grid">
+                            <div class="milk-option" data-milk="whole">
+                                <div class="option-preview whole-milk"></div>
+                                <span>Whole Milk</span>
+                            </div>
+                            <div class="milk-option" data-milk="almond">
+                                <div class="option-preview almond-milk"></div>
+                                <span>Almond Milk</span>
+                            </div>
+                            <div class="milk-option" data-milk="soy">
+                                <div class="option-preview soy-milk"></div>
+                                <span>Soy Milk</span>
+                            </div>
+                            <div class="milk-option" data-milk="oat">
+                                <div class="option-preview oat-milk"></div>
+                                <span>Oat Milk</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flavor-section">
+                        <h4>Flavor</h4>
+                        <div class="option-grid flavor-grid">
+                            <div class="flavor-option" data-flavor="none">
+                                <div class="option-preview none">✕</div>
+                                <span>No Flavor</span>
+                            </div>
+                            <div class="flavor-option" data-flavor="vanilla">
+                                <div class="option-preview vanilla-flavor"></div>
+                                <span>Vanilla</span>
+                            </div>
+                            <div class="flavor-option" data-flavor="caramel">
+                                <div class="option-preview caramel-flavor"></div>
+                                <span>Caramel</span>
+                            </div>
+                            <div class="flavor-option" data-flavor="hazelnut">
+                                <div class="option-preview hazelnut-flavor"></div>
+                                <span>Hazelnut</span>
+                            </div>
+                            <div class="flavor-option" data-flavor="chocolate">
+                                <div class="option-preview chocolate-flavor"></div>
+                                <span>Chocolate</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-content" id="step-3">
+                    <h3>Choose Your Topping</h3>
+                    <div class="option-grid">
+                        <div class="topping-option" data-topping="none">
+                            <div class="option-preview none">✕</div>
+                            <span>No Topping</span>
+                        </div>
+                        <div class="topping-option" data-topping="whippedcream">
+                            <div class="option-preview whipped"></div>
+                            <span>Whipped Cream</span>
+                        </div>
+                        <div class="topping-option" data-topping="chocolatesauce">
+                            <div class="option-preview chocolate"></div>
+                            <span>Chocolate Sauce</span>
+                        </div>
+                        <div class="topping-option" data-topping="cinnamon">
+                            <div class="option-preview cinnamon"></div>
+                            <span>Cinnamon</span>
+                        </div>
+                        <div class="topping-option" data-topping="carameldrizzle">
+                            <div class="option-preview caramel-drizzle"></div>
+                            <span>Caramel Drizzle</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-navigation">
+                    <button id="prev-step" class="nav-btn" disabled>Previous</button>
+                    <button id="next-step" class="nav-btn">Next</button>
+                    <button id="add-to-cart-final" class="nav-btn primary" style="display: none;">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="current-selection">
+            <p><strong>Your Drink:</strong> <span id="selected-type">None</span> with <span id="selected-milk">None</span> milk, <span id="selected-flavor">None</span> flavor, and <span id="selected-topping">None</span></p>
+            <p><strong>Price:</strong> $<span id="custom-drink-price">5.99</span></p>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal-overlay" id="customize-modal">
+    <div class="modal-content customize-card">
+        <button class="close-btn" id="close-customize">&times;</button>
+        <h2 id="modal-item-name">Drink Name</h2>
+        
+        <div class="option-group">
+            <label>Dietary Preference</label>
+            <select id="fasting-option">
+                <option value="Non-Fasting">Not Fasting (Milk)</option>
+                <option value="Fasting">Fasting (Soy/Almond)</option>
+            </select>
+        </div>
+
+        <div class="option-group">
+            <label>Sugar Level</label>
+            <select id="sugar-option">
+                <option value="No Sugar">No Sugar</option>
+                <option value="Normal">Normal</option>
+                <option value="Extra">Extra</option>
+            </select>
+        </div>
+
+        <div class="quantity-control">
+            <button id="minus-qty">-</button>
+            <span id="current-qty">1</span>
+            <button id="plus-qty">+</button>
+        </div>
+
+        <div class="modal-footer">
+            <p>Subtotal: $<span id="modal-subtotal">0.00</span></p>
+            <button class="add-btn-final" id="confirm-add">Add to Cart</button>
+           <button class="buy-now-btn" id="buy-now">Buy Now</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://checkout.chapa.co/checkout/payment/CHAPUBK_TEST-ZQdiPTaJyl2fIuEhMHYqVHu7tj2NE0mj"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
