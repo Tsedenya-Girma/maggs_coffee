@@ -1,0 +1,439 @@
+/* Mobile first styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #E6CCB2;
+  overflow-x: hidden;
+}
+/* Dark Theme */
+body.dark-theme {
+  background: #452802;
+  color: #f5f5f5;
+}
+
+body.dark-theme .profile-sidebar {
+  background: #3c2301;
+  border-right: 3px solid #5d4037;
+}
+
+body.dark-theme .theme-toggle {
+  background: #452802;
+  border-color: #5d4037;
+  color: #f5f5f5;
+}
+
+body.dark-theme .theme-toggle button {
+  background: #5d4037;
+  color: white;
+  border-color: #9C6644;
+}
+
+body.dark-theme .logout-btn {
+  background: #5d4037;
+}
+
+
+/* header layout */
+.header {
+  display: flex;
+  flex-direction: column; /* Stack main header and nav */
+  gap: 10px;
+  padding: 10px 5%;
+  background: #E6CCB2;
+  color:#9C6644;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+ 
+
+}
+.header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+/* logo */
+.logo img {
+  height: 40px;
+  width: auto;
+  animation: logoBounce 6s ease-in-out infinite;
+}
+@keyframes logoBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* search bar */
+.search-bar {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin: 0 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 50px; /* Fully rounded pill shape */
+  padding: 5px 15px;
+  width: 100%;
+  max-width: 500px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+.search-bar:focus-within {
+  border-color: #6F4E37; /* Coffee brown color */
+  box-shadow: 0 6px 12px rgba(111, 78, 55, 0.15);
+  transform: translateY(-2px);
+}
+.search-bar input {
+  border: none;
+  outline: none;
+  padding: 10px;
+  width: 100%;
+  font-size: 16px; 
+  background: transparent;
+}
+
+.search-bar button {
+  background: #9C6644;
+  border: none;
+  border-radius: 50%; /* Make it a circle */
+  width: 35px;        /* Fixed width */
+  height: 35px;       /* Fixed height */
+  padding: 0;         /* Remove extra padding */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;     /* Prevent it from squishing */
+}
+.search-bar button img {
+  width: 18px;        /* Size the icon inside the button */
+  height: auto;
+}
+.search-bar button:hover {
+  background: #6F4E37;
+}
+
+
+/*header icons */
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+  z-index: 3000;
+}
+
+.header-icons button cart:hover {
+  background: #DDB892;
+}
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+.cart-icon {
+  position: relative;
+}
+
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  padding: 2px 5px;
+  border-radius: 50%;
+}
+
+.profile-sidebar {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100%;
+  background: #FFFBF7;
+  border-right: 3px solid #9C6644;
+  box-shadow: 5px 0 25px rgba(0,0,0,0.1);
+  z-index: 1000;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  transition: left 0.3s ease;
+}
+
+.profile-sidebar.active {
+  left: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.sidebar-profile-icon img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #9C6644;
+}
+
+.sidebar-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.theme-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #FFF8DC;
+  border-radius: 12px;
+  border: 2px solid #DDB892;
+}
+
+.theme-toggle button {
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 2px solid #9C6644;
+  background: white;
+  color: #5d4037;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.logout-btn {
+  padding: 12px 20px;
+  background: #9C6644;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(58, 37, 1, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 900;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+/* nav menu */
+.nav {
+  display: flex;
+  flex-wrap: wrap;    /* Allow links to wrap if the screen is tiny */
+  align-items: center;
+  justify-content: center;
+  gap: 32px;          /* Tighter gap for mobile */
+  padding: 10px 0;
+  border-top: 1px solid rgba(156, 102, 68, 0.2); /* thin line above menu */
+}
+
+.nav a {
+  padding: 5px 10px;  /* Smaller padding for mobile */
+  color: #5d4037; /* A deep espresso brown */
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.5px; /* Makes text look cleaner */
+    text-transform: capitalize;
+    transition: all 0.3s ease;
+    position: relative; /* Necessary for the underline effect below */
+}
+
+.nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 50%;
+    background-color: #9C6644; /* Your brand brown */
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav a:hover {
+    font-weight: bold;
+}
+
+.nav a:hover::after {
+    width: 100%; /* Line grows to full width on hover */
+}
+
+.nav a.nav-special {
+    background: #9C6644;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+}
+
+.nav a.nav-special:hover {
+    background: #6F4E37;
+    transform: translateY(-1px);
+}
+
+/* when active */
+.nav.active {
+  display: flex;
+}
+
+
+
+
+/* tablets and up */
+@media (min-width: 768px) {
+  .header {
+        flex-direction: row; /* Put everything on one line for Desktop */
+        justify-content: space-between;
+        align-items: center;
+  }
+  .header-main {
+        display: contents;
+    }
+    .logo {
+    order: 1;                /* Logo first on the left */
+  }
+  .nav {
+    order: 2;                /* Menu items move to the second position */
+    display: flex;
+    margin: 0;
+    padding: 0;
+    border-top: none;
+  }
+  .search-bar {
+    order: 3;
+    max-width: 300px;
+    margin: 0 20px;
+  }
+
+  .header-icons {
+    order: 4;                /* Cart and Profile at the far right */
+  }
+  .nav a:hover {
+    background: none;
+    
+  }
+  
+}
+
+
+
+/* Floating Button Style */
+@keyframes slowBounce {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-15px) rotate(1deg); /* Moves up 15px */
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+}
+.custom-drink-trigger {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    background: #fff;
+    color: white;
+    border: 3px solid #5d4037; /* Espresso brown */
+    padding: 20px 30px;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; /* Creates an organic, hand-drawn shape */
+    cursor: pointer;
+    box-shadow: 5px 5px 0px #9C6644;
+    z-index: 1000;
+
+    animation: slowBounce 4s ease-in-out infinite; 
+    transition: all 0.3s ease;
+}
+
+.custom-drink-trigger span {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    color: #5d4037;
+}
+
+.custom-drink-trigger:hover {
+    /* Slightly faster pulse and scale on hover */
+    transform: scale(1.1);
+    box-shadow: 8px 8px 0px #9C6644;
+    animation-play-state: paused; /* Optional: stops bouncing when hovering */
+}
+
+/* Modal Overlay (The "Hovering" effect) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dim background */
+    backdrop-filter: blur(5px); /* Modern blur effect */
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background: #fffbf7;
+    padding: 40px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    text-align: center;
+    border: 2px solid #9C6644;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #9C6644;
+}
+
+/* to fix headder overlay */
+#Iced {
+  scroll-margin-top: 140px;
+}
+#hot {
+  scroll-margin-top: 140px;
+}
+#juice {
+  scroll-margin-top: 140px;
+}
+#snacks {
+  scroll-margin-top: 140px;
+}
